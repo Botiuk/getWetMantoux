@@ -23,5 +23,11 @@ module GetWetMantoux
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Supported locales
+    I18n.available_locales = [:uk]
+
+    # Default locale
+    I18n.default_locale = :uk
   end
 end
