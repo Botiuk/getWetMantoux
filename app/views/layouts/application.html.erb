@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>GetWetMantoux</title>
+    <title><%= t('appname') %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,6 +11,15 @@
   </head>
 
   <body>
-    <%= yield %>
+
+    <header>
+      <%= render 'shared/header' %>
+    </header>
+
+    <main>
+      <%= render 'shared/flash_messages' %>
+      <%= yield %>
+    </main>
+
   </body>
 </html>
