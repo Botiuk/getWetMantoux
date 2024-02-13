@@ -1,0 +1,9 @@
+<div id="<%= dom_id personal_card %>">
+    <%= personal_card.last_name %>
+    <%= personal_card.first_name %>
+    <%= personal_card.middle_name %>
+    <%= personal_card.date_of_birth %>
+
+    <%= link_to t('.edit'), edit_personal_card_path(personal_card), class: "btn btn-outline-primary" %>
+    <%= link_to t('.show'), personal_card_path(personal_card), class: "btn btn-outline-primary" %>
+</div>

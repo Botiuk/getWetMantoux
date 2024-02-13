@@ -1,0 +1,51 @@
+<%= form_with(model: personal_card) do |form| %>
+    <% if personal_card.errors.any? %>
+        <div style="color: red">
+        <h2><%= t 'forms.messages.errors', count: personal_card.errors.count %></h2>
+
+        <ul>
+            <% personal_card.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+            <% end %>
+        </ul>
+        </div>
+    <% end %>
+
+    <div>
+
+      <div>
+        <%= form.hidden_field :user_id, :value => ( form.object.user_id || current_user.id ), readonly: true %>
+      </div>
+
+      <div>
+        <%= form.label :last_name, t('.last_name'), style: "display: block" %>
+        <%= form.text_field :last_name, autofocus: true, class: "form-control" %>
+      </div>
+
+      <div>
+        <%= form.label :first_name, t('.first_name'), style: "display: block" %>
+        <%= form.text_field :first_name, class: "form-control" %>
+      </div>
+
+      <div>
+        <%= form.label :middle_name, t('.middle_name'), style: "display: block" %>
+        <%= form.text_field :middle_name, class: "form-control" %>
+      </div>
+
+      <div>
+        <%= form.label :date_of_birth, t('.date_of_birth'), style: "display: block" %>
+        <%= form.date_field :date_of_birth, max: Date.today, class: "form-control" %>
+      </div>
+      
+      <br/>
+      <p class="fw-bold text-danger"><%= t('.validations') %></p>
+
+      <div>
+        <%= form.button nil, class: "btn btn-outline-success" do %>
+          <%= t('button.submit') %>
+        <% end %>
+      </div>
+
+    </div>
+
+<% end %>
