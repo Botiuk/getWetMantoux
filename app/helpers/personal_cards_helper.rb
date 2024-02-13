@@ -1,0 +1,2 @@
+module PersonalCardsHelper
+end
