@@ -1,8 +1,66 @@
-<% if user_signed_in? %>
-  Logged in as <strong><%= current_user.phone %></strong>.
-  <%= link_to "Edit profile", edit_user_registration_path %> |
-  <%= button_to "Logout", destroy_user_session_path,  method: :delete, data: { turbo_method: :delete } %>
-<% else %>
-  <%= link_to "Sign up", new_user_registration_path %> |
-  <%= link_to "Login", new_user_session_path %>
-<% end %>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <%= link_to t('appname'), root_path, class: "navbar-brand text-wrap" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+      <% if user_signed_in? %>
+        <li class="nav-item">
+          <%= link_to personal_cards_path, class: "nav-link active" do %>
+            <% if current_user.admin? %>
+              <%= t('navigation.personal_cards') %>
+            <% else %>
+              <%= t('navigation.personal_card') %>
+            <% end %>
+          <% end %>
+        </li>
+
+      <% end %>
+
+<!--
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown link
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+-->
+
+      </ul>
+
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <% if user_signed_in? %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <% if @card.blank? %>
+                  <%= current_user.phone %>
+                <% else %>
+                  <%= current_user.personal_card.first_name %> <%= current_user.personal_card.last_name %>
+                <% end %>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><%= link_to t('navigation.edit_profile'), edit_user_registration_path, class: "dropdown-item" %></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <%= button_to t('navigation.logout'), destroy_user_session_path,  method: :delete, data: { turbo_method: :delete }, class: "btn btn-outline-primary" %>
+            </li>
+          <% else %>
+            <li class="nav-item mx-1">
+              <%= link_to t('navigation.sign_up'), new_user_registration_path, class: "btn btn-outline-primary me-2" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to t('navigation.login'), new_user_session_path, class: "btn btn-outline-primary" %>
+            </li>
+          <% end %>
+      </ul>
+
+    </div>
+  </div>
+</nav>
