@@ -9,6 +9,7 @@ class User < ApplicationRecord
   validates :phone, uniqueness: true, format: { with: /\A[+]?\d+\z/ }, length: { in: 6..15 }
 
   has_one :personal_card
+  has_one :doctor
 
   def email_required?
     false
