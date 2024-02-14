@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   has_one :personal_card
   has_one :doctor
+  has_many :reviews
 
   def email_required?
     false
