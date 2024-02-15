@@ -12,3 +12,4 @@ pin "jquery_ujs", to: "jquery_ujs.js", preload: true
 pin "popper", to: "popper.js", preload: true
 pin "trix"
 pin "@rails/actiontext", to: "actiontext.esm.js"
+pin "activestorage", to: "activestorage.js"
