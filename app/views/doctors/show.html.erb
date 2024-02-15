@@ -1,0 +1,20 @@
+<h4><%= t('.title') %></h4>
+<div class="row">
+    <% if @doctor.doctor_photo.present? %>
+        <div class="col-md-3">
+            <img class="mw-100" src="<%= cloudinary_url(@doctor.doctor_photo.key, height: 300, crop: :scale) %>" > 
+        </div>
+    <% end %>
+    <div class="col-md-9">
+        <%= @doctor.speciality.name %><br/>
+        <h5>
+            <%= @doctor.personal_card.last_name %><br/>
+            <%= @doctor.personal_card.first_name %><br/>
+            <%= @doctor.personal_card.middle_name if @doctor.personal_card.middle_name.present? %>
+        </h5>
+        <%= @doctor.doctor_info if @doctor.doctor_info.present? %>
+    </div>
+</div>
+
+<%= link_to t('button.edit'), edit_doctor_path(@doctor), class: "btn btn-outline-primary" %>
+<%= button_to t('button.destroy'), @doctor,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>

@@ -1,0 +1,7 @@
+<h4><%= t('.title') %></h4>
+
+<%= link_to t('button.add.doctor'), new_doctor_path, :method => :post, class: "btn btn-outline-primary" %>
+
+<% @doctors.each do |doctor| %>
+    <%= render doctor %>
+<% end %>

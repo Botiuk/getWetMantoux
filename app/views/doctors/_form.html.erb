@@ -1,0 +1,43 @@
+<%= form_with(model: doctor) do |form| %>
+  <% if doctor.errors.any? %>
+    <div style="color: red">
+      <h2><%= t 'forms.messages.errors', count: doctor.errors.count %></h2>
+      <ul>
+        <% doctor.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <div>
+      <%= form.label :user_id, t('.user'), style: "display: block" %>
+      <%= select(:doctor, :user_id, options_for_select(@users_role_doctor, :selected => form.object.user_id), {:prompt => t('.prompt.user')}, {:class => "form-select"} ) %>
+    </div>
+
+    <div>
+      <%= form.label :speciality_id, t('.speciality'), style: "display: block" %>
+      <%= select(:doctor, :speciality_id, options_for_select(@specialities, :selected => form.object.speciality_id), {:prompt => t('.prompt.speciality')}, {:class => "form-select"} ) %>
+    </div>
+
+    <div>
+      <%= form.label :doctor_photo, t('.doctor_photo'), style: "display: block" %>
+      <%= cl_image_tag(doctor.doctor_photo.key, height: 100, crop: :scale) if doctor.doctor_photo.present? %>
+      <%= form.file_field :doctor_photo, direct_upload: true, class: "form-control" %>
+    </div>
+
+    <div class="field">
+      <%= form.label :doctor_info, t('.doctor_info'), style: "display: block" %>
+      <%= form.rich_text_area :doctor_info %>
+    </div>
+
+    <div>
+        <%= form.button nil, class: "btn btn-outline-success" do %>
+          <%= t('button.submit') %>
+        <% end %>
+    </div>
+
+  </div>
+
+<% end %>

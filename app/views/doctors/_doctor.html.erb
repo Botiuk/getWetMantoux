@@ -1,0 +1,10 @@
+<div id="<%= dom_id doctor %>">
+    <%= doctor.personal_card.last_name %>
+    <%= doctor.personal_card.first_name %>
+    <%= doctor.personal_card.middle_name if doctor.personal_card.middle_name.present? %>
+    <%= doctor.speciality.name %>
+
+    <%= link_to t('button.edit'), edit_doctor_path(doctor), class: "btn btn-outline-primary" %>
+    <%= link_to t('button.show'), doctor_path(doctor), class: "btn btn-outline-primary" %>
+    <%= button_to t('button.destroy'), doctor,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
+</div>
