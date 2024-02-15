@@ -10,11 +10,22 @@ uk:
     create:
       personal_card: "Дякуємо за заповнення особистої картки!"
       speciality: "Медичну спеціальність створено"
+      doctor: "Лікаря додано"
     update:
       personal_card: "Дані особистої картки оновлені"
       speciality: "Медичну спеціальність оновлено"
+      doctor: "Дані лікаря оновлено"
     destroy:
       speciality: "Медичну спеціальність видалено"
+      doctor: "Лікаря видалено"
+  
+  forms:
+    messages:
+      errors:
+        one: "Одна помилка не дає зберегти цей запис:"
+        few: "%{count} помилки не дають зберегти цей запис:"
+        many: "%{count} помилок не дають зберегти цей запис:"
+        other: "%{count} помилка:"
 
   activerecord:
     attributes:
@@ -23,7 +34,7 @@ uk:
         last_name: "Поле 'Прізвище'"
         date_of_birth: "Поле 'Дата народження'"
         user: "Ваша особиста картка вже створена і нову не створиш, бо ваш користувач"
-
+  
   navigation:
     login: "Ввійти"
     logout: "Вийти"
@@ -32,6 +43,7 @@ uk:
     personal_cards: "Особисті картки"
     personal_card: "Особиста картка"
     specialities: "Медичні спеціальності"
+    doctors: "Лікарі"
 
   button:
     submit: "Підтвердити"
@@ -41,6 +53,7 @@ uk:
     confirm_destroy: "Точно видалити?"
     add:
       speciality: "Додати спеціальність"
+      doctor: "Додати лікаря"
 
   personal_cards:
     new:
@@ -70,3 +83,21 @@ uk:
       description-placeholder: "поле можна залишити порожнім"
     edit:
       title: "Редагувати медичну спеціальність"
+
+  doctors:
+    index:
+      title: "Лікарі"
+    new:
+      title: "Новий лікар"
+    form:
+      user: "Профіль користувача"
+      speciality: "Медична спеціальність"
+      doctor_photo: "Фото лікаря"
+      doctor_info: "Про лікаря"
+      prompt:
+        user: "-- виберіть профіль користувача --"
+        speciality: "-- виберіть спеціальність--"
+    edit:
+      title: "Редагувати інформацію про лікаря"
+    show:
+      title: "Детальніше про лікаря"      
