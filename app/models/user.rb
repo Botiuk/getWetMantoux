@@ -23,4 +23,9 @@ class User < ApplicationRecord
   def set_default_role
     self.role ||= :user
   end
+
+  def self.users_with_role_doctor
+    User.where(role: "doctor").pluck(:phone, :id)
+  end
+  
 end

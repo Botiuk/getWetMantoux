@@ -3,4 +3,8 @@ class Speciality < ApplicationRecord
 
     validates :name, presence: true
 
+    def self.formhelper
+        Speciality.pluck(:name, :id)
+    end
+
 end
