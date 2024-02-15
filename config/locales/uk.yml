@@ -9,8 +9,12 @@ uk:
   notice:
     create:
       personal_card: "Дякуємо за заповнення особистої картки!"
+      speciality: "Медичну спеціальність створено"
     update:
       personal_card: "Дані особистої картки оновлені"
+      speciality: "Медичну спеціальність оновлено"
+    destroy:
+      speciality: "Медичну спеціальність видалено"
 
   activerecord:
     attributes:
@@ -27,9 +31,16 @@ uk:
     edit_profile: "Редагувати профіль"
     personal_cards: "Особисті картки"
     personal_card: "Особиста картка"
+    specialities: "Медичні спеціальності"
 
   button:
     submit: "Підтвердити"
+    edit: "Редагувати"
+    show: "Показати"
+    destroy: "Видалити"
+    confirm_destroy: "Точно видалити?"
+    add:
+      speciality: "Додати спеціальність"
 
   personal_cards:
     new:
@@ -47,3 +58,15 @@ uk:
       title: "Редагувати особисту картку"
     index:
       title: "Особисті картки"
+
+  specialities:
+    index:
+      title: "Медичні спеціальності"
+    new:
+      title: "Нова медична спеціальність"
+    form:
+      name: "Назва спеціальності"
+      description: "Опис спеціальності"
+      description-placeholder: "поле можна залишити порожнім"
+    edit:
+      title: "Редагувати медичну спеціальність"

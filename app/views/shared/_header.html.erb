@@ -17,6 +17,12 @@
           <% end %>
         </li>
 
+        <% if current_user.admin? %>
+          <li class="nav-item">
+            <%= link_to t('navigation.specialities'), specialities_path, class: "nav-link active"%>
+          </li>
+        <% end %>
+
       <% end %>
 
 <!--
