@@ -1,5 +1,4 @@
-class PersonalCardsController < ApplicationController  
-  before_action :find_user_personal_card 
+class PersonalCardsController < ApplicationController
   skip_before_action :find_user_personal_card, only: %i[ new create ]
   before_action :set_personal_card, only: %i[ show edit update ]
 

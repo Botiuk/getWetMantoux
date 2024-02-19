@@ -1,5 +1,4 @@
 class SpecialitiesController < ApplicationController
-  before_action :find_user_personal_card
   before_action :set_speciality, only: %i[ edit update destroy ]
 
   def index

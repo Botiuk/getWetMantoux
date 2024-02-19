@@ -1,5 +1,4 @@
 class DoctorsController < ApplicationController
-  before_action :find_user_personal_card
   before_action :set_doctor, only: %i[ show edit update destroy ]
   before_action :my_formhelpers, only: %i[ new edit create ]
 
