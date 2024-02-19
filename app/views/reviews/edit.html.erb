@@ -1,0 +1,9 @@
+<h4>
+    <%= t('.title') %>
+    <%= @doctor.personal_card.last_name %>
+    <%= @doctor.personal_card.middle_name if @doctor.personal_card.middle_name.present?%>
+    <%= @doctor.personal_card.first_name %>
+    (<%= @doctor.speciality.name %>)
+</h4>
+
+<%= render "form", review: @review %>

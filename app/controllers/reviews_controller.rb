@@ -9,10 +9,14 @@ class ReviewsController < ApplicationController
   end
 
   def new
-    @review = Review.new
+    @review = Review.new(doctor_id: params[:doctor_id])
+    @doctor = Doctor.find(params[:doctor_id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path
   end
 
   def edit
+    @doctor = Doctor.find(@review.doctor_id)
   end
 
   def create
@@ -47,7 +51,7 @@ class ReviewsController < ApplicationController
     end
 
     def review_params
-      params.require(:review).permit(:user_id, :doctor_id, :review_date)
+      params.require(:review).permit(:user_id, :doctor_id, :review_date, :recomendation)
     end
 
 end

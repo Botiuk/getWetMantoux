@@ -1,0 +1,18 @@
+<h4><%= t('.title') %></h4>
+<%= @review.user.personal_card.last_name %>
+<%= @review.user.personal_card.middle_name %>
+<%= @review.user.personal_card.first_name %>
+
+<%= @review.doctor.speciality.name %>
+
+<%= @review.doctor.personal_card.last_name %>
+<%= @review.doctor.personal_card.middle_name %>
+<%= @review.doctor.personal_card.first_name %>
+
+<%= @review.review_date%>
+
+<%= @review.recomendation %>
+
+<%= link_to t('button.edit'), edit_review_path(@review), class: "btn btn-outline-primary" %>
+
+<%= button_to t('button.destroy'), @review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
