@@ -24,6 +24,7 @@ class PersonalCardsController < ApplicationController
 
   def create
     @personal_card = PersonalCard.new(personal_card_params)
+    @personal_card.user_id = current_user.id
     if @personal_card.save
       redirect_to personal_card_url(@personal_card), notice: t('notice.create.personal_card')
     else

@@ -14,10 +14,6 @@
     <div>
 
       <div>
-        <%= form.hidden_field :user_id, :value => ( form.object.user_id || current_user.id ), readonly: true %>
-      </div>
-
-      <div>
         <%= form.label :last_name, t('.last_name'), style: "display: block" %>
         <%= form.text_field :last_name, autofocus: true, class: "form-control" %>
       </div>
