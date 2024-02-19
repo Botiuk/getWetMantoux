@@ -47,6 +47,7 @@ uk:
     personal_card: "Особиста картка"
     specialities: "Медичні спеціальності"
     doctors: "Лікарі"
+    reviews: "Записи на прийом"
 
   button:
     submit: "Підтвердити"

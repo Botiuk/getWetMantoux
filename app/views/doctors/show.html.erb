@@ -18,3 +18,5 @@
 
 <%= link_to t('button.edit'), edit_doctor_path(@doctor), class: "btn btn-outline-primary" %>
 <%= button_to t('button.destroy'), @doctor,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
+
+<%= link_to t('button.add.review'), new_review_path(:doctor_id => @doctor.id), method: :post, class: "btn btn-outline-primary" %>
