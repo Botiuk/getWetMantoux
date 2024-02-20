@@ -16,7 +16,11 @@ class ReviewsController < ApplicationController
   end
 
   def edit
-    @doctor = Doctor.find(@review.doctor_id)
+    if @review.recomendation.blank?
+      @doctor = Doctor.find(@review.doctor_id)
+    else
+      redirect_to review_url(@review), alert: t('notice.edit.close')
+    end
   end
 
   def create

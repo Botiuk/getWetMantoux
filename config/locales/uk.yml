@@ -22,6 +22,10 @@ uk:
       doctor: "Лікаря видалено"
       review: "Запис на прийом до лікаря видалено"
 
+  alert:
+    edit:
+      close: "Прийом завершений"
+
   forms:
     messages:
       errors:

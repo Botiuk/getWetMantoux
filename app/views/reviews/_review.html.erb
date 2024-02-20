@@ -1,17 +1,24 @@
 <div id="<%= dom_id review %>">
-    <%= review.user.personal_card.last_name %>
-    <%= review.user.personal_card.middle_name %>
-    <%= review.user.personal_card.first_name %>
+    <%= review.review_date %>
+
+    <% if current_user.id != review.user.id %>
+        <%= review.user.personal_card.last_name %>
+        <%= review.user.personal_card.middle_name %>
+        <%= review.user.personal_card.first_name %>
+    <% end %>
 
     <%= review.doctor.speciality.name %>
     <%= review.doctor.personal_card.last_name %>
     <%= review.doctor.personal_card.middle_name %>
     <%= review.doctor.personal_card.first_name %>
-    <%= review.review_date %>
+
+    
     <%= review.recomendation %>
 
-    <%= link_to t('button.edit'), edit_review_path(review), class: "btn btn-outline-primary" %>
     <%= link_to t('button.show'), review_path(review), class: "btn btn-outline-primary" %>
 
-    <%= button_to t('button.destroy'), review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
+    <% if review.recomendation.blank? %>
+        <%= link_to t('button.edit'), edit_review_path(review), class: "btn btn-outline-primary" %>
+        <%= button_to t('button.destroy'), review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
+    <% end %>
 </div>
