@@ -1,8 +1,15 @@
 class ReviewsController < ApplicationController
   before_action :set_review, only: %i[ show edit update destroy ]
+  load_and_authorize_resource
 
-  def index
-    @reviews = Review.all
+  def index    
+    if current_user.admin?
+      @reviews = Review.reviews_index_admin
+    elsif current_user.doctor?
+      @reviews = Review.reviews_index_doctor(current_user.doctor.id)
+    else
+      @reviews = Review.reviews_index_user(current_user.id)
+    end
   end
 
   def show
@@ -16,16 +23,15 @@ class ReviewsController < ApplicationController
   end
 
   def edit
-    if @review.recomendation.blank?
-      @doctor = Doctor.find(@review.doctor_id)
-    else
-      redirect_to review_url(@review), alert: t('notice.edit.close')
+    if @review.recomendation.present?
+      redirect_to review_url(@review), alert: t('alert.edit.close')
     end
   end
 
   def create
     @review = Review.new(review_params)
     @review.user_id = current_user.id
+    @doctor = Doctor.find(@review.doctor_id)
     if @review.save
         redirect_to review_url(@review), notice: t('notice.create.review')
     else
@@ -42,8 +48,12 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-    @review.destroy
-    redirect_to reviews_url, notice: t('notice.destroy.review')
+    if @review.recomendation.blank?
+      @review.destroy
+      redirect_to reviews_url, notice: t('notice.destroy.review')
+    else
+      redirect_to review_url(@review), alert: t('alert.edit.close')
+    end
   end
 
   private
