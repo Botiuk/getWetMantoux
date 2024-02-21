@@ -4,9 +4,17 @@
     <%= doctor.personal_card.middle_name if doctor.personal_card.middle_name.present? %>
     <%= doctor.speciality.name %>
 
-    <%= link_to t('button.edit'), edit_doctor_path(doctor), class: "btn btn-outline-primary" %>
     <%= link_to t('button.show'), doctor_path(doctor), class: "btn btn-outline-primary" %>
-    <%= button_to t('button.destroy'), doctor,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
 
-    <%= link_to t('button.add.review'), new_review_path(:doctor_id => doctor.id), method: :post, class: "btn btn-outline-primary" %>
+    <% if can? :update, doctor %>
+        <%= link_to t('button.edit'), edit_doctor_path(doctor), class: "btn btn-outline-primary" %>
+    <% end %>
+    
+    <% if can? :destroy, doctor %>
+        <%= button_to t('button.destroy'), doctor,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
+    <% end %>
+
+    <% if can? :create, Review %>
+        <%= link_to t('button.add.review'), new_review_path(:doctor_id => doctor.id), method: :post, class: "btn btn-outline-primary" %>
+    <% end %>
 </div>
