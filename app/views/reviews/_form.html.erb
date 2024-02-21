@@ -17,18 +17,20 @@
             <%= form.hidden_field :doctor_id %>
         </div>
 
-        <%# if current_user.user? %>
+        <% if current_user.user? %>
             <div>
                 <%= form.label :review_date, t('.review_date'), style: "display: block" %>
                 <%= form.date_field :review_date, min: Date.today, class: "form-control" %>
             </div>
-        <%# end %>
+        <% end %>
 
         <% if current_user.doctor? %>
             <div class="field">
                 <%= form.label :recomendation, t('.recomendation'), style: "display: block" %>
                 <%= form.rich_text_area :recomendation %>
             </div>
+
+            <p class="fw-bold text-danger"><%= t('.close_review') %></p>
         <% end %>
 
         <div>

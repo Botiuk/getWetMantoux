@@ -18,7 +18,11 @@
     <%= link_to t('button.show'), review_path(review), class: "btn btn-outline-primary" %>
 
     <% if review.recomendation.blank? %>
-        <%= link_to t('button.edit'), edit_review_path(review), class: "btn btn-outline-primary" %>
-        <%= button_to t('button.destroy'), review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
+        <% if can? :update, review %>
+            <%= link_to t('button.edit'), edit_review_path(review), class: "btn btn-outline-primary" %>
+        <% end %>
+        <% if can? :destroy, review %>
+            <%= button_to t('button.destroy'), review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
+        <% end %>
     <% end %>
 </div>

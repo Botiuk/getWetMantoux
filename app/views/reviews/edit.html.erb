@@ -1,9 +1,19 @@
 <h4>
     <%= t('.title') %>
-    <%= @doctor.personal_card.last_name %>
-    <%= @doctor.personal_card.middle_name if @doctor.personal_card.middle_name.present?%>
-    <%= @doctor.personal_card.first_name %>
-    (<%= @doctor.speciality.name %>)
+    <% if can? :destroy, @review %>
+        <%= @review.doctor.personal_card.last_name %>
+        <%= @review.doctor.personal_card.middle_name %>
+        <%= @review.doctor.personal_card.first_name %>
+        (<%= @review.doctor.speciality.name %>)
+    <% end %>
 </h4>
+
+<% if cannot? :destroy, @review %>
+    <%= t('.patient') %>
+    <%= @review.user.personal_card.last_name %>
+    <%= @review.user.personal_card.middle_name %>
+    <%= @review.user.personal_card.first_name %>,
+    (<%= @review.user.personal_card.date_of_birth %>)
+<% end %>
 
 <%= render "form", review: @review %>

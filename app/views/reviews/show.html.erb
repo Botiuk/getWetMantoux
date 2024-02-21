@@ -1,9 +1,12 @@
 <h4><%= t('.title') %></h4>
 <%= @review.review_date%>
 
-<%= @review.user.personal_card.last_name %>
-<%= @review.user.personal_card.middle_name %>
-<%= @review.user.personal_card.first_name %>
+<% if current_user.id != @review.user.id %>
+    <%= @review.user.personal_card.last_name %>
+    <%= @review.user.personal_card.middle_name %>
+    <%= @review.user.personal_card.first_name %>
+    (<%= @review.user.personal_card.date_of_birth %>)
+<% end %>
 
 <%= @review.doctor.speciality.name %>
 
@@ -13,7 +16,13 @@
 
 <%= @review.recomendation %>
 
+<%= link_to t('button.back'), :back, class: "btn btn-outline-primary" %>
+
 <% if @review.recomendation.blank? %>
-    <%= link_to t('button.edit'), edit_review_path(@review), class: "btn btn-outline-primary" %>
-    <%= button_to t('button.destroy'), @review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
+    <% if can? :update, @review %>
+        <%= link_to t('button.edit'), edit_review_path(@review), class: "btn btn-outline-primary" %>
+    <% end %>
+    <% if can? :destroy, @review %>
+        <%= button_to t('button.destroy'), @review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
+    <% end %>
 <% end %>
