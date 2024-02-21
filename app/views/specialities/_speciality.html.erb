@@ -1,11 +1,15 @@
 <div id="<%= dom_id speciality %>">
     <table>
         <tr>
-    <td><%= speciality.name %></td>
-    <td><%= speciality.description %></td>
+            <td><h5><%= speciality.name %></h5></td>
+            <td>(<%= speciality.description %>)</td>
 
-    <td><%= link_to t('button.edit'), edit_speciality_path(speciality), class: "btn btn-outline-primary" %></td>
-    <td><%= button_to t('button.destroy'), speciality,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %></td>
+            <% if can? :update, speciality %>
+                <td><%= link_to t('button.edit'), edit_speciality_path(speciality), class: "btn btn-outline-primary" %></td>
+            <% end %>
+            <% if can? :destroy, speciality %>       
+                <td><%= button_to t('button.destroy'), speciality,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %></td>
+            <% end %>
         </tr>
     <table>
 </div>

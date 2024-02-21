@@ -1,6 +1,8 @@
 <h4><%= t('.title') %></h4>
 
-<%= link_to t('button.add.speciality'), new_speciality_path, :method => :post, class: "btn btn-outline-primary" %>
+<% if can? :create, Speciality %>
+    <%= link_to t('button.add.speciality'), new_speciality_path, :method => :post, class: "btn btn-outline-primary" %>
+<% end %>
 
 <% @specialities.each do |speciality| %>
     <%= render speciality %>
