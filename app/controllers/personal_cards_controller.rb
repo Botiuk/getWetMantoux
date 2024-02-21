@@ -1,6 +1,7 @@
 class PersonalCardsController < ApplicationController
   skip_before_action :find_user_personal_card, only: %i[ new create ]
   before_action :set_personal_card, only: %i[ show edit update ]
+  load_and_authorize_resource
 
   def index
     if current_user.admin?
