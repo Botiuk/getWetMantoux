@@ -11,10 +11,13 @@
   <% end %>
 
   <div>
-    <div>
-      <%= form.label :user_id, t('.user'), style: "display: block" %>
-      <%= select(:doctor, :user_id, options_for_select(@users_role_doctor, :selected => form.object.user_id), {:prompt => t('.prompt.user')}, {:class => "form-select"} ) %>
-    </div>
+
+    <% if current_user.admin? %>
+      <div>
+        <%= form.label :user_id, t('.user'), style: "display: block" %>
+        <%= select(:doctor, :user_id, options_for_select(@users_role_doctor, :selected => form.object.user_id), {:prompt => t('.prompt.user')}, {:class => "form-select"} ) %>
+      </div>
+    <% end %>
 
     <div>
       <%= form.label :speciality_id, t('.speciality'), style: "display: block" %>

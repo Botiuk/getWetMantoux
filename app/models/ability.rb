@@ -19,6 +19,7 @@ class Ability
       if user.doctor?
         can  [:read, :medical_card], Review
         can :update, Review, doctor_id: user.doctor.id
+        can :update, Doctor, user_id: user.id
       end
   
       if user.admin?
