@@ -3,16 +3,15 @@
 
     <% if current_user.id != review.user.id %>
         <%= review.user.personal_card.last_name %>
-        <%= review.user.personal_card.middle_name %>
         <%= review.user.personal_card.first_name %>
+        <%= review.user.personal_card.middle_name %>
     <% end %>
 
     <%= review.doctor.speciality.name %>
     <%= review.doctor.personal_card.last_name %>
-    <%= review.doctor.personal_card.middle_name %>
     <%= review.doctor.personal_card.first_name %>
-
-
+    <%= review.doctor.personal_card.middle_name %>
+    
     <%= review.recomendation %>
 
     <% if review.recomendation.blank? %>

@@ -10,7 +10,7 @@
         <h5>
             <%= @doctor.personal_card.last_name %><br/>
             <%= @doctor.personal_card.first_name %><br/>
-            <%= @doctor.personal_card.middle_name if @doctor.personal_card.middle_name.present? %>
+            <%= @doctor.personal_card.middle_name %>
         </h5>
         <%= @doctor.doctor_info if @doctor.doctor_info.present? %>
     </div>
