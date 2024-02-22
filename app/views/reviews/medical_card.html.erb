@@ -1,5 +1,9 @@
 <h4><%= t('.title') %></h4>
 
-<% @reviews.each do |review| %>
-    <%= render review %>
+<% if @reviews.present? %>
+    <% @reviews.each do |review| %>
+        <%= render review %>
+    <% end %>
+<% else %>
+    <%= t('.reviews_empty') %>
 <% end %>

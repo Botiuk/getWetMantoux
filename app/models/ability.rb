@@ -14,6 +14,7 @@ class Ability
 
       if user.user?
         can [:manage, :medical_card], Review, user_id: user.id
+        cannot :update, Review
       end
   
       if user.doctor?

@@ -1,19 +1,11 @@
-<h4>
-    <%= t('.title') %>
-    <% if can? :destroy, @review %>
-        <%= @review.doctor.personal_card.last_name %>
-        <%= @review.doctor.personal_card.first_name %>
-        <%= @review.doctor.personal_card.middle_name %>
-        (<%= @review.doctor.speciality.name %>)
-    <% end %>
-</h4>
+<h4><%= t('.title') %></h4>
 
-<% if cannot? :destroy, @review %>
-    <%= t('.patient') %>
-    <%= @review.user.personal_card.last_name %>
-    <%= @review.user.personal_card.first_name %>
-    <%= @review.user.personal_card.middle_name %>,
-    (<%= I18n.l(@review.user.personal_card.date_of_birth) %>)
-<% end %>
+<%= t('.patient') %>
+<%= @review.user.personal_card.last_name %>
+<%= @review.user.personal_card.first_name %>
+<%= @review.user.personal_card.middle_name %>
+(<%= I18n.l(@review.user.personal_card.date_of_birth) %>)
+
+<%= link_to t('button.medical_card').html_safe, reviews_medical_card_path(user_id: @review.user.id), :method => :get, target: :_blank, class: "btn btn-outline-primary" %>
 
 <%= render "form", review: @review %>

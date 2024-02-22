@@ -11,18 +11,15 @@
     <%= review.doctor.personal_card.last_name %>
     <%= review.doctor.personal_card.first_name %>
     <%= review.doctor.personal_card.middle_name %>
-    
+
     <%= review.recomendation %>
 
     <% if review.recomendation.blank? %>
         <% if can? :update, review %>
-            <%= link_to t('button.edit'), edit_review_path(review), class: "btn btn-outline-primary" %>
+            <%= link_to t('button.edit_review'), edit_review_path(review), class: "btn btn-outline-primary" %>
         <% end %>
         <% if can? :destroy, review %>
             <%= button_to t('button.destroy'), review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
-        <% end %>
-        <% if (can? :medical_card, review) && (current_user.id != review.user.id) %>
-            <%= link_to t('button.medical_card').html_safe, reviews_medical_card_path(user_id: review.user.id), :method => :get, class: "btn btn-outline-primary" %>
         <% end %>
     <% else %>
         <%= link_to t('button.show'), review_path(review), class: "btn btn-outline-primary" %>
