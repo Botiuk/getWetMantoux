@@ -6,7 +6,7 @@ class Ability
   def initialize(user)
 
     can :read, :home
-    can :read, Speciality
+    can [:read, :belonging_doctors], Speciality
     can :read, Doctor
 
     if user.present?

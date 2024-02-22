@@ -4,6 +4,8 @@
             <td><h5><%= speciality.name %></h5></td>
             <td>(<%= speciality.description %>)</td>
 
+            <td><%= link_to t('button.doctors').html_safe, specialities_belonging_doctors_path(id: speciality.id), :method => :get, class: "btn btn-outline-primary" %></td>
+
             <% if can? :update, speciality %>
                 <td><%= link_to t('button.edit'), edit_speciality_path(speciality), class: "btn btn-outline-primary" %></td>
             <% end %>

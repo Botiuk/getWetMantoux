@@ -69,6 +69,7 @@ uk:
     destroy: "Видалити"
     confirm_destroy: "Точно видалити?"
     back: "Назад"
+    doctors: "Лікарі"
     add:
       speciality: "Додати спеціальність"
       doctor: "Додати лікаря"
@@ -102,6 +103,8 @@ uk:
       description-placeholder: "поле можна залишити пустим"
     edit:
       title: "Редагувати медичну спеціальність"
+    belonging_doctors:
+      title: "Лікарі спеціальності"
 
   doctors:
     index:

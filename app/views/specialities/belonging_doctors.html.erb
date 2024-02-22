@@ -1,0 +1,6 @@
+<h4><%= t('.title') %> "<%= @speciality.name %>"</h4>
+(<%= @speciality.description %>)
+
+<% @doctors.each do |doctor| %>
+    <%= render 'doctors/doctor', doctor: doctor %>
+<% end %>
