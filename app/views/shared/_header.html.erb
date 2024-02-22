@@ -6,44 +6,32 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
-      <% if user_signed_in? %>
-        <li class="nav-item">
-          <%= link_to personal_cards_path, class: "nav-link active" do %>
-            <% if current_user.admin? %>
-              <%= t('navigation.personal_cards') %>
-            <% else %>
-              <%= t('navigation.personal_card') %>
-            <% end %>
+        <% if user_signed_in? %>
+          <% if current_user.admin? %>
+            <li class="nav-item">
+              <%= link_to t('navigation.personal_cards'), personal_cards_path, class: "nav-link active" %>
+            </li>
           <% end %>
-        </li>
 
-        <% if current_user.admin? %>
           <li class="nav-item">
-            <%= link_to t('navigation.specialities'), specialities_path, class: "nav-link active"%>
+              <%= link_to t('navigation.reviews'), reviews_path, class: "nav-link active"%>
           </li>
-          <li class="nav-item">
-            <%= link_to t('navigation.doctors'), doctors_path, class: "nav-link active"%>
-          </li>
-          <li class="nav-item">
-            <%= link_to t('navigation.reviews'), reviews_path, class: "nav-link active"%>
-          </li>
+          
+          <% if current_user.user? %>
+            <li class="nav-item">
+              <%= link_to t('navigation.medical_card'), reviews_medical_card_path(user_id: current_user.id), :method => :get, class: "nav-link active"%>
+            </li>
+          <% end %>
+          
         <% end %>
 
-      <% end %>
-
-<!--
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown link
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
+        <li class="nav-item">
+            <%= link_to t('navigation.specialities'), specialities_path, class: "nav-link active"%>
         </li>
--->
 
+        <li class="nav-item">
+          <%= link_to t('navigation.doctors'), doctors_path, class: "nav-link active"%>
+        </li>
       </ul>
 
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -58,6 +46,8 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><%= link_to t('navigation.edit_profile'), edit_user_registration_path, class: "dropdown-item" %></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><%= link_to t('navigation.edit_personal_card'), edit_personal_card_path(id: current_user.personal_card.id), class: "dropdown-item" %></li>              
               </ul>
             </li>
             <li class="nav-item">
