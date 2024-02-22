@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   get 'specialities/belonging_doctors', to: 'specialities#belonging_doctors'
+  get 'reviews/medical_card', to: 'reviews#medical_card'
 
   resources :personal_cards, :specialities, :doctors, :reviews
 

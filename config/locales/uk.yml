@@ -70,6 +70,7 @@ uk:
     confirm_destroy: "Точно видалити?"
     back: "Назад"
     doctors: "Лікарі"
+    medical_card: "Медична картка"
     add:
       speciality: "Додати спеціальність"
       doctor: "Додати лікаря"
@@ -139,3 +140,5 @@ uk:
       age: " р."
     show:
       title: "Детальніше про запис на огляд до лікаря"
+    medical_card:
+      title: "Медична картка"

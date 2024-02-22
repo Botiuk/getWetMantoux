@@ -56,6 +56,10 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def medical_card
+    @reviews = Review.reviews_medical_card(params[:user_id])
+  end
+
   private
 
     def set_review

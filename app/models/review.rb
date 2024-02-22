@@ -24,4 +24,9 @@ class Review < ApplicationRecord
     Review.where(user_id: user_id).where.not(id: @close_record_ids).order(:review_date, :doctor_id)
   end
 
+  def self.reviews_medical_card(user_id)
+    Review.close_records_ids
+    Review.where(user_id: user_id, id: @close_record_ids).order(:review_date).reverse_order
+  end
+
 end

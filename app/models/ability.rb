@@ -13,11 +13,11 @@ class Ability
       can [:read, :create, :update], PersonalCard, user_id: user.id
 
       if user.user?
-        can :manage, Review, user_id: user.id
+        can [:manage, :medical_card], Review, user_id: user.id
       end
   
       if user.doctor?
-        can :read, Review
+        can  [:read, :medical_card], Review
         can :update, Review, doctor_id: user.doctor.id
       end
   
