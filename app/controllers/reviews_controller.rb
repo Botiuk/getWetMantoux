@@ -2,7 +2,7 @@ class ReviewsController < ApplicationController
   before_action :set_review, only: %i[ show edit update destroy ]
   load_and_authorize_resource
 
-  def index    
+  def index
     if current_user.admin?
       @reviews = Review.reviews_index_admin
     elsif current_user.doctor?
@@ -16,8 +16,13 @@ class ReviewsController < ApplicationController
   end
 
   def new
-    @review = Review.new(doctor_id: params[:doctor_id])
-    @doctor = Doctor.find(params[:doctor_id])
+    count = Review.count_doctor_open_reviews(params[:doctor_id])
+      if count < 10
+        @review = Review.new(doctor_id: params[:doctor_id])
+        @doctor = Doctor.find(params[:doctor_id])
+      else
+        redirect_to doctor_path(id: params[:doctor_id]), alert: t('alert.doctor_busy')
+      end
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path
   end
