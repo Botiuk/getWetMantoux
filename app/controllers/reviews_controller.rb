@@ -16,13 +16,8 @@ class ReviewsController < ApplicationController
   end
 
   def new
-    count = Review.count_doctor_open_reviews(params[:doctor_id])
-      if count < 10
-        @review = Review.new(doctor_id: params[:doctor_id])
-        @doctor = Doctor.find(params[:doctor_id])
-      else
-        redirect_to doctor_path(id: params[:doctor_id]), alert: t('alert.doctor_busy')
-      end
+    @review = Review.new(doctor_id: params[:doctor_id])
+    @doctor = Doctor.find(params[:doctor_id])
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path
   end
@@ -37,16 +32,21 @@ class ReviewsController < ApplicationController
     @review = Review.new(review_params)
     @review.user_id = current_user.id
     @doctor = Doctor.find(@review.doctor_id)
-    if @review.save
+    count = Review.count_doctor_open_reviews(@review.doctor_id, @review.review_date)
+    if count < 10
+      if @review.save
         redirect_to review_url(@review), notice: t('notice.create.review')
-    else
+      else
         render :new, status: :unprocessable_entity
+      end
+    else
+      redirect_to new_review_path(doctor_id: @review.doctor_id), alert: t('alert.doctor_busy')
     end
   end
 
   def update
     if @review.update(review_params)
-        redirect_to review_url(@review), notice: t('notice.update.review')
+        redirect_to reviews_url, notice: t('notice.update.review')
     else
         render :edit, status: :unprocessable_entity
     end

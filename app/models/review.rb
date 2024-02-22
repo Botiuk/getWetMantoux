@@ -29,9 +29,9 @@ class Review < ApplicationRecord
     Review.where(user_id: user_id, id: @close_record_ids).order(:review_date).reverse_order
   end
 
-  def self.count_doctor_open_reviews(doctor_id)
+  def self.count_doctor_open_reviews(doctor_id, review_date)
     Review.close_records_ids
-    Review.where(doctor_id: doctor_id).count - Review.where(doctor_id: doctor_id, id: @close_record_ids).count 
+    Review.where(doctor_id: doctor_id, review_date: review_date).where.not(id: @close_record_ids).count 
   end
 
 end
