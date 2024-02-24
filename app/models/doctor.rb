@@ -9,4 +9,6 @@ class Doctor < ApplicationRecord
 
   validates :user_id, uniqueness: true
 
+  enum :doctor_status, { working: 0, fired: 1, vacation: 2 }
+
 end

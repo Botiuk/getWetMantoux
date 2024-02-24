@@ -7,12 +7,15 @@
     <% end %>
     <div class="col-md-9">
         <%= @doctor.speciality.name %><br/>
+        <% if can? :create, Doctor %>
+            <%= Doctor.human_enum_name(:doctor_status, @doctor.doctor_status) %>
+        <% end %>
         <h5>
             <%= @doctor.personal_card.last_name %><br/>
             <%= @doctor.personal_card.first_name %><br/>
             <%= @doctor.personal_card.middle_name %>
-        </h5>
-        <%= @doctor.doctor_info if @doctor.doctor_info.present? %>
+        </h5>        
+        <%= @doctor.doctor_info %>
     </div>
 </div>
 
@@ -27,5 +30,9 @@
 <% end %>
 
 <% if can? :create, Review %>
-    <%= link_to t('button.add.review'), new_review_path(:doctor_id => @doctor.id), method: :post, class: "btn btn-outline-primary" %>
+    <% if @doctor.working? %>
+        <%= link_to t('button.add.review'), new_review_path(:doctor_id => @doctor.id), method: :post, class: "btn btn-outline-primary" %>
+    <% else %>
+        <div class="btn btn-outline-secondary"><%= t('.vacation') %></div>
+    <% end %>
 <% end %>

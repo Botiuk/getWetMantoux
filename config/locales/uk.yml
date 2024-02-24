@@ -49,6 +49,10 @@ uk:
         user_id: "Поле 'Профіль користувача-лікаря'"
         user: "Поле 'Профіль користувача-лікаря'"
         speciality: "Поле 'Медична спеціальність'"
+        doctor_statuses:
+          working: "Працює"
+          fired: "Звільнено"
+          vacation: "Відпустка"
       review:
         review_date: "Поле 'Дата огляду'"
 
@@ -113,6 +117,8 @@ uk:
   doctors:
     index:
       title: "Лікарі"
+    doctor:
+      vacation: "У відпустці"
     new:
       title: "Новий лікар"
     form:
@@ -120,6 +126,7 @@ uk:
       speciality: "Медична спеціальність:"
       doctor_photo: "Фото лікаря:"
       doctor_info: "Про лікаря:"
+      doctor_status: "Робочий статус:"
       prompt:
         user: "-- виберіть профіль користувача --"
         speciality: "-- виберіть спеціальність--"
@@ -127,6 +134,7 @@ uk:
       title: "Редагувати інформацію про лікаря"
     show:
       title: "Детальніше про лікаря"
+      vacation: "У відпустці"
 
   reviews:
     index:

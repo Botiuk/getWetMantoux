@@ -5,7 +5,11 @@ class DoctorsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @doctors = Doctor.all
+    if current_user.admin?
+      @doctors = Doctor.all.order(:doctor_status)
+    else
+      @doctors = Doctor.where.not(doctor_status: 1)
+    end
   end
 
   def show
@@ -49,7 +53,7 @@ class DoctorsController < ApplicationController
     end
 
     def doctor_params
-      params.require(:doctor).permit(:user_id, :speciality_id, :doctor_photo, :doctor_info)
+      params.require(:doctor).permit(:user_id, :speciality_id, :doctor_photo, :doctor_info, :doctor_status)
     end
 
     def my_formhelpers

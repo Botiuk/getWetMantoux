@@ -3,6 +3,9 @@
     <%= doctor.personal_card.first_name %>
     <%= doctor.personal_card.middle_name %>
     <%= doctor.speciality.name %>
+    <% if can? :create, Doctor %>
+        <%= Doctor.human_enum_name(:doctor_status, doctor.doctor_status) %>
+    <% end %>
 
     <%= link_to t('button.show'), doctor_path(doctor), class: "btn btn-outline-primary" %>
 
@@ -15,6 +18,10 @@
     <% end %>
 
     <% if can? :create, Review %>
-        <%= link_to t('button.add.review'), new_review_path(:doctor_id => doctor.id), method: :post, class: "btn btn-outline-primary" %>
+        <% if doctor.working? %>
+            <%= link_to t('button.add.review'), new_review_path(:doctor_id => doctor.id), method: :post, class: "btn btn-outline-primary" %>
+        <% else %>
+            <div class="btn btn-outline-secondary"><%= t('.vacation') %></div>
+        <% end %>
     <% end %>
 </div>

@@ -17,7 +17,7 @@ class Ability
         cannot :update, Review
       end
   
-      if user.doctor?
+      if user.doctor? && user.doctor.present? && user.doctor.working?
         can  [:read, :medical_card], Review
         can :update, Review, doctor_id: user.doctor.id
         can :update, Doctor, user_id: user.id
