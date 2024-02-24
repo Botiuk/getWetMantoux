@@ -46,8 +46,10 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><%= link_to t('navigation.edit_profile'), edit_user_registration_path, class: "dropdown-item" %></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><%= link_to t('navigation.edit_personal_card'), edit_personal_card_path(id: current_user.personal_card.id), class: "dropdown-item" %></li>              
+                <% if @card.present? %>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><%= link_to t('navigation.edit_personal_card'), edit_personal_card_path(id: current_user.personal_card.id), class: "dropdown-item" %></li>              
+                <% end %>
               </ul>
             </li>
             <li class="nav-item">
