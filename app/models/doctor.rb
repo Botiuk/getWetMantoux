@@ -7,4 +7,6 @@ class Doctor < ApplicationRecord
   has_one_attached :doctor_photo
   has_rich_text :doctor_info
 
+  validates :user_id, uniqueness: true
+
 end
