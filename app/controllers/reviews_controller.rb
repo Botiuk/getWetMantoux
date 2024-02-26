@@ -16,8 +16,13 @@ class ReviewsController < ApplicationController
   end
 
   def new
-    @review = Review.new(doctor_id: params[:doctor_id])
-    @doctor = Doctor.find(params[:doctor_id])
+    open_review_for_pair = Review.open_review_for_pair(params[:doctor_id], current_user.id)
+    if open_review_for_pair.blank?
+      @review = Review.new(doctor_id: params[:doctor_id])
+      @doctor = Doctor.find(params[:doctor_id])    
+    else
+      redirect_to reviews_url, alert: t('alert.new.present')
+    end
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path
   end

@@ -34,4 +34,9 @@ class Review < ApplicationRecord
     Review.where(doctor_id: doctor_id, review_date: review_date).where.not(id: @close_record_ids).count 
   end
 
+  def self.open_review_for_pair(doctor_id, user_id)
+    Review.close_records_ids
+    Review.where(doctor_id: doctor_id, user_id: user_id, review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids).pluck(:id)
+  end
+
 end
