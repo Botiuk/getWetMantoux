@@ -11,14 +11,14 @@
         </div>
     <% end %>
 
-    <div>
+    <div class="row g-3">
 
         <div>
             <%= form.hidden_field :doctor_id %>
         </div>
 
         <% if can? :create, Review %>
-            <div>
+            <div class="col-md-2">
                 <%= form.label :review_date, t('.review_date'), style: "display: block" %>
                 <%= form.date_field :review_date, min: Date.today, max: (Date.today + 7), class: "form-control" %>
             </div>
@@ -30,7 +30,7 @@
                 <%= form.rich_text_area :recomendation %>
             </div>
 
-            <p class="fw-bold text-danger"><%= t('.close_review') %></p>
+            <div class="fw-bold text-danger"><%= t('.close_review') %></div>
         <% end %>
 
         <div>

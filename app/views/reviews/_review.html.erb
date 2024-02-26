@@ -1,27 +1,42 @@
 <div id="<%= dom_id review %>">
-    <%= I18n.l(review.review_date, format: :long) %>
+<% if review.review_date == Date.today %>
+    <table class="table text-start table-borderless align-middle table-warning">
+<% else %>
+    <table class="table text-start table-borderless align-middle table-secondary">
+<% end %>
+    <tr>
+        <td style="width: 12%;"><%= I18n.l(review.review_date, format: :long) %></td>
 
-    <% if current_user.id != review.user.id %>
-        <%= review.user.personal_card.last_name %>
-        <%= review.user.personal_card.first_name %>
-        <%= review.user.personal_card.middle_name %>
-    <% end %>
-
-    <%= review.doctor.speciality.name %>
-    <%= review.doctor.personal_card.last_name %>
-    <%= review.doctor.personal_card.first_name %>
-    <%= review.doctor.personal_card.middle_name %>
-
-    <%= review.recomendation %>
-
-    <% if review.recomendation.blank? %>
-        <% if can? :update, review %>
-            <%= link_to t('button.edit_review'), edit_review_path(review), class: "btn btn-outline-primary" %>
+        <% if current_user.id != review.user.id %>
+            <td style="width: 20%;">
+                <%= review.user.personal_card.last_name %> <%= review.user.personal_card.first_name %> <%= review.user.personal_card.middle_name %>
+            </td>
         <% end %>
-        <% if can? :destroy, review %>
-            <%= button_to t('button.destroy'), review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
+
+        <td style="width: 15%;"><%= review.doctor.speciality.name %></td>
+
+        <td style="width: 20%;">
+            <%= review.doctor.personal_card.last_name %> <%= review.doctor.personal_card.first_name %> <%= review.doctor.personal_card.middle_name %>
+        </td>
+
+        <td style="width: 50px;"><%= review.recomendation.to_plain_text.truncate(100) %></td>
+
+        <% if review.recomendation.blank? %>
+            <% if (can? :update, review) && (review.review_date == Date.today) %>
+                <td style="width: 7%;">
+                    <%= link_to t('button.edit_review'), edit_review_path(review), class: "btn btn-outline-primary btn-sm" %>
+                </td>
+            <% end %>
+            <% if can? :destroy, review %>
+                <td style="width: 7%;">
+                    <%= button_to t('button.destroy'), review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary btn-sm" %>
+                </td>
+            <% end %>
+        <% else %>
+            <td style="width: 7%;">
+                <%= link_to t('button.show'), review_path(review), class: "btn btn-outline-primary btn-sm" %>
+            </td>
         <% end %>
-    <% else %>
-        <%= link_to t('button.show'), review_path(review), class: "btn btn-outline-primary" %>
-    <% end %>
+    </tr>
+    </table>
 </div>

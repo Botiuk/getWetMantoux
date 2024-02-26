@@ -1,11 +1,8 @@
-<h4><%= t('.title') %></h4>
+<h4>
+    <%= t('.title') %> <%= @review.user.personal_card.last_name %> <%= @review.user.personal_card.first_name %> <%= @review.user.personal_card.middle_name %>
+    (<%= I18n.l(@review.user.personal_card.date_of_birth) %>)
+</h4>
 
-<%= t('.patient') %>
-<%= @review.user.personal_card.last_name %>
-<%= @review.user.personal_card.first_name %>
-<%= @review.user.personal_card.middle_name %>
-(<%= I18n.l(@review.user.personal_card.date_of_birth) %>)
-
-<%= link_to t('button.medical_card').html_safe, reviews_medical_card_path(user_id: @review.user.id), :method => :get, target: :_blank, class: "btn btn-outline-primary" %>
+<div><%= link_to t('button.medical_card').html_safe, reviews_medical_card_path(user_id: @review.user.id), :method => :get, target: :_blank, class: "btn btn-outline-primary" %></div>
 
 <%= render "form", review: @review %>

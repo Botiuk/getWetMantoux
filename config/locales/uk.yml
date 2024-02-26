@@ -63,7 +63,7 @@ uk:
     edit_profile: "Редагувати профіль"
     personal_cards: "Особисті картки"
     edit_personal_card: "Редагувати особисту картку"
-    specialities: "Медичні спеціальності"
+    specialities: "Спеціальності"
     doctors: "Лікарі"
     reviews: "Записи на огляд"
     medical_card: "Медична картка"
@@ -102,15 +102,15 @@ uk:
 
   specialities:
     index:
-      title: "Медичні спеціальності"
+      title: "Спеціальності"
     new:
-      title: "Нова медична спеціальність"
+      title: "Нова спеціальність"
     form:
       name: "Назва спеціальності:"
       description: "Опис спеціальності:"
       description-placeholder: "поле можна залишити пустим"
     edit:
-      title: "Редагувати медичну спеціальність"
+      title: "Редагувати спеціальність"
     belonging_doctors:
       title: "Лікарі спеціальності"
 
@@ -123,7 +123,7 @@ uk:
       title: "Новий лікар"
     form:
       user: "Профіль користувача-лікаря:"
-      speciality: "Медична спеціальність:"
+      speciality: "Спеціальність:"
       doctor_photo: "Фото лікаря:"
       doctor_info: "Про лікаря:"
       doctor_status: "Робочий статус:"
@@ -148,10 +148,12 @@ uk:
       close_review: "Після заповнення рекомендацій, запис на огляд вважається закритим і його не можливо редагувати!"
     edit:
       title: "Огляд пацієнта"
-      patient: "Пацієнт:"
-      age: " р."
     show:
       title: "Детальніше про огляд"
+      review_date: "Дата огляду:"
+      patient: "Пацієнт:"
+      doctor: "Лікар:"
+      recomendation: "Рекомендації лікаря:"
     medical_card:
       title: "Медична картка"
       reviews_empty: "Немає відомостей про попередні огляди"
