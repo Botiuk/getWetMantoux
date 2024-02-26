@@ -5,10 +5,10 @@ class DoctorsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    if current_user.admin?
+    if user_signed_in? && current_user.admin?
       @doctors = Doctor.all.order(:doctor_status)
     else
-      @doctors = Doctor.where.not(doctor_status: 1)
+      @doctors = Doctor.where.not(doctor_status: "fired")
     end
   end
 
