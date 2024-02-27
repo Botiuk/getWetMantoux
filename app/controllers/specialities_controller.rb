@@ -37,7 +37,7 @@ class SpecialitiesController < ApplicationController
   end
 
   def belonging_doctors
-    @doctors = Doctor.where(speciality_id: params[:id]).where.not(doctor_status: 1)
+    @doctors = Doctor.where(speciality_id: params[:id]).where.not(doctor_status: "fired")
   end
 
   private
