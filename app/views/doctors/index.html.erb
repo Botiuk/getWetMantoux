@@ -1,9 +1,14 @@
-<h4><%= t('.title') %></h4>
+<div class="row mb-2"> 
+    <div class="col"><h4><%= t('.title') %></h4></div>
+    <% if can? :create, Doctor %>
+        <div class="col text-end">
+            <%= link_to t('button.add.doctor'), new_doctor_path, :method => :post, class: "btn btn-outline-success" %>
+        </div>
+    <% end %>
+</div>
 
-<% if can? :create, Doctor %>
-    <%= link_to t('button.add.doctor'), new_doctor_path, :method => :post, class: "btn btn-outline-primary" %>
-<% end %>
-
-<% @doctors.each do |doctor| %>
-    <%= render doctor %>
-<% end %>
+<div class="row">
+    <% @doctors.each do |doctor| %>
+        <%= render doctor %>
+    <% end %>
+</div>

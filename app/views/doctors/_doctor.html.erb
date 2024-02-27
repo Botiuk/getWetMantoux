@@ -1,27 +1,50 @@
-<div id="<%= dom_id doctor %>">
-    <%= doctor.personal_card.last_name %>
-    <%= doctor.personal_card.first_name %>
-    <%= doctor.personal_card.middle_name %>
-    <%= doctor.speciality.name %>
-    <% if can? :create, Doctor %>
-        <%= Doctor.human_enum_name(:doctor_status, doctor.doctor_status) %>
-    <% end %>
-
-    <%= link_to t('button.show'), doctor_path(doctor), class: "btn btn-outline-primary" %>
-
-    <% if can? :update, doctor %>
-        <%= link_to t('button.edit'), edit_doctor_path(doctor), class: "btn btn-outline-primary" %>
-    <% end %>
-    
-    <% if can? :destroy, doctor %>
-        <%= button_to t('button.destroy'), doctor,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %>
-    <% end %>
-
-    <% if can? :create, Review %>
-        <% if doctor.working? %>
-            <%= link_to t('button.add.review'), new_review_path(:doctor_id => doctor.id), method: :post, class: "btn btn-outline-primary" %>
-        <% else %>
-            <div class="btn btn-outline-secondary"><%= t('.vacation') %></div>
-        <% end %>
-    <% end %>
+<div class="col-sm-3">
+    <div id="<%= dom_id doctor %>" style="background-color: #e3f2fd;">
+        <div class="card text-bg-light mt-2 mb-3">
+            <div class="card-body">
+                <div class="mb-2 d-flex justify-content-between">
+                        <div class="text-bg-info opacity-75 rounded-pill px-2">
+                            <%= doctor.speciality.name %>
+                        </div>
+                    <% if can? :create, Doctor %>
+                        <% if doctor.working? %>
+                            <div class="text-bg-success opacity-75 rounded-pill px-2">
+                        <% elsif doctor.fired? %>
+                            <div class="text-bg-danger opacity-75 rounded-pill px-2">
+                        <% else %>
+                            <div class="text-bg-secondary opacity-75 rounded-pill px-2">
+                        <% end %>
+                                <%= Doctor.human_enum_name(:doctor_status, doctor.doctor_status) %>
+                            </div>
+                    <% end %>
+                </div>
+                <div class="text-center pb-2">
+                    <%= cl_image_tag(doctor.doctor_photo.key, height: 150, crop: :scale) if doctor.doctor_photo.present? %>
+                </div>
+                <h5 class="card-title">
+                    <%= doctor.personal_card.last_name %><br/>
+                    <%= doctor.personal_card.first_name %> <%= doctor.personal_card.middle_name %>
+                </h5>
+                <div class="d-flex justify-content-evenly">
+                    <div>
+                        <%= link_to t('button.show'), doctor_path(doctor), class: "btn btn-outline-primary btn-sm" %>
+                    </div>
+                    <% if can? :update, doctor %>
+                        <div>
+                            <%= link_to t('button.edit'), edit_doctor_path(doctor), class: "btn btn-outline-success btn-sm" %>
+                        </div>
+                    <% end %>
+                    <% if can? :create, Review %>
+                        <% if doctor.working? %>
+                            <div>
+                                <%= link_to t('button.add.review'), new_review_path(:doctor_id => doctor.id), method: :post, class: "btn btn-outline-success btn-sm" %>
+                            </div>
+                        <% else %>
+                            <div class="btn btn-outline-secondary btn-sm"><%= t('.vacation') %></div>
+                        <% end %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

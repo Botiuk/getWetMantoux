@@ -10,20 +10,20 @@
     </div>
   <% end %>
 
-  <div>
+  <div class="row g-3">
 
     <% if can? :create, Doctor %>
-      <div>
+      <div class="col-md-6">
         <%= form.label :user_id, t('.user'), style: "display: block" %>
         <%= select(:doctor, :user_id, options_for_select(@users_role_doctor, :selected => form.object.user_id), {:prompt => t('.prompt.user')}, {:class => "form-select"} ) %>
       </div>
 
-      <div>
+      <div class="col-md-6">
         <%= form.label :speciality_id, t('.speciality'), style: "display: block" %>
         <%= select(:doctor, :speciality_id, options_for_select(@specialities, :selected => form.object.speciality_id), {:prompt => t('.prompt.speciality')}, {:class => "form-select"} ) %>
       </div>
 
-      <div>
+      <div class="col-md-2">
         <%= form.label :doctor_status, t('.doctor_status'), style: "display: block" %>
         <%= form.select :doctor_status, Doctor.doctor_statuses.keys.map{ |key| [Doctor.human_enum_name(:doctor_status, key), key] }, {:selected => form.object.doctor_status}, {:class => "form-select"} %>
       </div>
