@@ -1,7 +1,7 @@
 class DoctorsController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[ index show ]
-  before_action :set_doctor, only: %i[ show edit update destroy ]
-  before_action :my_formhelpers, only: %i[ new edit create ]
+  before_action :set_doctor, only: %i[ show edit update ]
+  before_action :my_formhelpers, only: %i[ new create ]
   load_and_authorize_resource
 
   def index
@@ -20,6 +20,8 @@ class DoctorsController < ApplicationController
   end
 
   def edit
+    @users_role_doctor = User.doctor_formhelper(@doctor.user_id)
+    @specialities = Speciality.formhelper
   end
 
   def create
@@ -39,11 +41,6 @@ class DoctorsController < ApplicationController
       end
   end
 
-  def destroy
-        @doctor.destroy
-        redirect_to doctors_url, notice: t('notice.destroy.doctor')
-  end
-
   private
 
     def set_doctor
@@ -57,7 +54,7 @@ class DoctorsController < ApplicationController
     end
 
     def my_formhelpers
-      @users_role_doctor = User.users_with_role_doctor
+      @users_role_doctor = User.free_users_with_role_doctor
       @specialities = Speciality.formhelper
     end
 end

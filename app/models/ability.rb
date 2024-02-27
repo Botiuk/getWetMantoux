@@ -25,7 +25,7 @@ class Ability
   
       if user.admin?
         can :manage, Speciality
-        can :manage, Doctor
+        can [:read, :create, :update], Doctor
         can [:read, :update], PersonalCard
         can :read, Review
       end

@@ -24,8 +24,13 @@ class User < ApplicationRecord
     self.role ||= :user
   end
 
-  def self.users_with_role_doctor
-    User.where(role: "doctor").pluck(:phone, :id)
+  def self.free_users_with_role_doctor
+    doctors_user_id = Doctor.pluck(:user_id)
+    User.where(role: "doctor").where.not(id: doctors_user_id).pluck(:phone, :id)
+  end
+
+  def self.doctor_formhelper(user_id)
+    User.where(id: user_id).pluck(:phone, :id)
   end
   
 end

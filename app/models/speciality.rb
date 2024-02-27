@@ -4,7 +4,7 @@ class Speciality < ApplicationRecord
     validates :name, presence: true, uniqueness: true
 
     def self.formhelper
-        Speciality.pluck(:name, :id)
+        Speciality.order(:name).pluck(:name, :id)
     end
 
 end
