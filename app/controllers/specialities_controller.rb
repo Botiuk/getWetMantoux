@@ -4,7 +4,7 @@ class SpecialitiesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @specialities = Speciality.all
+    @specialities = Speciality.all.order(:name)
   end
 
   def new

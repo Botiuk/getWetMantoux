@@ -10,13 +10,13 @@
         </div>
     <% end %>
 
-    <div>
-        <div>
+    <div class="row g-3">
+        <div class="col-md-6">
             <%= form.label :name, t('.name'), style: "display: block" %>
             <%= form.text_field :name, size: "25x1", autofocus: true, class: "form-control" %>
         </div>
 
-        <div>
+        <div class="col-12">
             <%= form.label :description, t('.description'), style: "display: block" %>
             <%= form.text_area :description, size: "30x5", placeholder: t('.description-placeholder'), class: "form-control" %>
         </div>

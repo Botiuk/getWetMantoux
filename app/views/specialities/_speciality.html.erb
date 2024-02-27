@@ -1,16 +1,16 @@
 <div id="<%= dom_id speciality %>">
-    <table>
+    <table class="table text-start table-borderless align-middle table-secondary">
         <tr>
-            <td><h5><%= speciality.name %></h5></td>
-            <td>(<%= speciality.description %>)</td>
+            <td style="width: 15%;"><h6><%= speciality.name %></h6></td>
+            <td><%= speciality.description if speciality.description.present? %></td>
 
-            <td><%= link_to t('button.doctors').html_safe, specialities_belonging_doctors_path(id: speciality.id), :method => :get, class: "btn btn-outline-primary" %></td>
+            <td style="width: 7%;"><%= link_to t('button.doctors').html_safe, specialities_belonging_doctors_path(id: speciality.id), :method => :get, class: "btn btn-outline-primary btn-sm" %></td>
 
             <% if can? :update, speciality %>
-                <td><%= link_to t('button.edit'), edit_speciality_path(speciality), class: "btn btn-outline-primary" %></td>
+                <td style="width: 7%;"><%= link_to t('button.edit'), edit_speciality_path(speciality), class: "btn btn-outline-success btn-sm" %></td>
             <% end %>
             <% if can? :destroy, speciality %>       
-                <td><%= button_to t('button.destroy'), speciality,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary" %></td>
+                <td style="width: 7%;"><%= button_to t('button.destroy'), speciality,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-danger btn-sm" %></td>
             <% end %>
         </tr>
     <table>
