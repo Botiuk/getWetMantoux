@@ -29,7 +29,7 @@ class ReviewsController < ApplicationController
 
   def edit
     if @review.recomendation.present?
-      redirect_to review_url(@review), alert: t('alert.edit.close')
+      redirect_to reviews_url, alert: t('alert.edit.close')
     end
   end
 
@@ -40,7 +40,7 @@ class ReviewsController < ApplicationController
     count = Review.count_doctor_open_reviews(@review.doctor_id, @review.review_date)
     if count < 10
       if @review.save
-        redirect_to review_url(@review), notice: t('notice.create.review')
+        redirect_to reviews_url, notice: t('notice.create.review')
       else
         render :new, status: :unprocessable_entity
       end
@@ -62,7 +62,7 @@ class ReviewsController < ApplicationController
       @review.destroy
       redirect_to reviews_url, notice: t('notice.destroy.review')
     else
-      redirect_to review_url(@review), alert: t('alert.edit.close')
+      redirect_to reviews_url, alert: t('alert.edit.close')
     end
   end
 

@@ -27,7 +27,7 @@ class DoctorsController < ApplicationController
   def create
     @doctor = Doctor.new(doctor_params)
       if @doctor.save
-        redirect_to doctor_url(@doctor), notice: t('notice.create.doctor')
+        redirect_to doctors_url, notice: t('notice.create.doctor')
       else
         render :new, status: :unprocessable_entity
       end
@@ -35,7 +35,7 @@ class DoctorsController < ApplicationController
 
   def update
       if @doctor.update(doctor_params)
-        redirect_to doctor_url(@doctor), notice: t('notice.update.doctor')
+        redirect_to doctors_url, notice: t('notice.update.doctor')
       else
         render :edit, status: :unprocessable_entity
       end
