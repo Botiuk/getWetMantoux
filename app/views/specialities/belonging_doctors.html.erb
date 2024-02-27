@@ -8,5 +8,5 @@
         <%= render 'doctors/doctor', doctor: doctor %>
     <% end %>
 <% else %>
-    <%= t('.doctors_empty') %>
+    <p class="fw-semibold text-danger"><%= t('.doctors_empty') %></p>
 <% end %>
