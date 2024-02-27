@@ -1,10 +1,15 @@
 class SpecialitiesController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[ index belonging_doctors ]
-  before_action :set_speciality, only: %i[ edit update destroy belonging_doctors ]
+  before_action :set_speciality, only: %i[ edit update belonging_doctors ]
   load_and_authorize_resource
 
   def index
-    @specialities = Speciality.all.order(:name)
+    if user_signed_in? && current_user.admin?
+      @specialities = Speciality.all.order(:name)
+    else
+      active_speciality_ids = Doctor.active_specialities
+      @specialities = Speciality.where(id: active_speciality_ids).order(:name)
+    end    
   end
 
   def new
@@ -29,11 +34,6 @@ class SpecialitiesController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
-  end
-
-  def destroy
-    @speciality.destroy
-    redirect_to specialities_url, notice: t('notice.destroy.speciality')
   end
 
   def belonging_doctors

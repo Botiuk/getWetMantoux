@@ -9,9 +9,6 @@
             <% if can? :update, speciality %>
                 <td style="width: 7%;"><%= link_to t('button.edit'), edit_speciality_path(speciality), class: "btn btn-outline-success btn-sm" %></td>
             <% end %>
-            <% if can? :destroy, speciality %>       
-                <td style="width: 7%;"><%= button_to t('button.destroy'), speciality,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-danger btn-sm" %></td>
-            <% end %>
         </tr>
     <table>
 </div>

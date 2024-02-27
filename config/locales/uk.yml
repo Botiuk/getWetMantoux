@@ -18,7 +18,6 @@ uk:
       doctor: "Дані лікаря оновлено"
       review: "Огляд лікарем проведено"
     destroy:
-      speciality: "Медичну спеціальність видалено"
       review: "Запис на огляд до лікаря скасовано"
 
   alert:
@@ -75,9 +74,7 @@ uk:
     edit: "Редагувати"
     edit_review: "Оглянути"
     show: "Детальніше"
-    destroy: "Видалити"
     destroy_review: "Скасувати"
-    confirm_destroy: "Точно видалити?"
     confirm_destroy_review: "Точно скасувати запис на огляд?"
     back: "Назад"
     doctors: "Лікарі"

@@ -11,4 +11,8 @@ class Doctor < ApplicationRecord
 
   enum :doctor_status, { working: 0, fired: 1, vacation: 2 }
 
+  def self.active_specialities
+    Doctor.where.not(doctor_status: "fired").group(:speciality_id).pluck(:speciality_id)
+  end
+
 end
