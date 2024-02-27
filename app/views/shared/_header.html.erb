@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
   <div class="container-fluid">
     <%= link_to t('appname'), root_path, class: "navbar-brand text-wrap" %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,24 +14,30 @@
           <% end %>
 
           <li class="nav-item">
-              <%= link_to t('navigation.reviews'), reviews_path, class: "nav-link active"%>
+            <%= link_to t('navigation.reviews'), reviews_path, class: "nav-link active" %>
           </li>
-          
+
           <% if current_user.user? %>
             <li class="nav-item">
-              <%= link_to t('navigation.medical_card'), reviews_medical_card_path(user_id: current_user.id), :method => :get, class: "nav-link active"%>
+              <%= link_to t('navigation.medical_card'), reviews_medical_card_path(user_id: current_user.id), :method => :get, class: "nav-link active" %>
             </li>
           <% end %>
-          
+
         <% end %>
 
-        <li class="nav-item">
-            <%= link_to t('navigation.specialities'), specialities_path, class: "nav-link active"%>
-        </li>
+        <% if user_signed_in? && current_user.admin? %>
+          <li class="nav-item">
+            <%= link_to  t('navigation.specialities_admin'), specialities_path, class: "nav-link active" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to t('navigation.doctors'), doctors_path, class: "nav-link active" %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to  t('navigation.specialities'), specialities_path, class: "nav-link active" %>
+          </li>
+        <% end %>
 
-        <li class="nav-item">
-          <%= link_to t('navigation.doctors'), doctors_path, class: "nav-link active"%>
-        </li>
       </ul>
 
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -48,7 +54,7 @@
                 <li><%= link_to t('navigation.edit_profile'), edit_user_registration_path, class: "dropdown-item" %></li>
                 <% if @card.present? %>
                   <li><hr class="dropdown-divider"></li>
-                  <li><%= link_to t('navigation.edit_personal_card'), edit_personal_card_path(id: current_user.personal_card.id), class: "dropdown-item" %></li>              
+                  <li><%= link_to t('navigation.edit_personal_card'), edit_personal_card_path(id: current_user.personal_card.id), class: "dropdown-item" %></li>
                 <% end %>
               </ul>
             </li>

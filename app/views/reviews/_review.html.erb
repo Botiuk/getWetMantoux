@@ -7,29 +7,34 @@
     <tr>
         <td style="width: 12%;"><%= I18n.l(review.review_date, format: :long) %></td>
 
+        <td style="width: 12%;"><%= review.doctor.speciality.name %></td>
+
+        <td style="width: 20%;">
+            <%= review.doctor.personal_card.last_name %> <%= review.doctor.personal_card.first_name %> <%= review.doctor.personal_card.middle_name %>
+        </td>
+
         <% if current_user.id != review.user.id %>
             <td style="width: 20%;">
                 <%= review.user.personal_card.last_name %> <%= review.user.personal_card.first_name %> <%= review.user.personal_card.middle_name %>
             </td>
         <% end %>
 
-        <td style="width: 15%;"><%= review.doctor.speciality.name %></td>
-
-        <td style="width: 20%;">
-            <%= review.doctor.personal_card.last_name %> <%= review.doctor.personal_card.first_name %> <%= review.doctor.personal_card.middle_name %>
+        <td style="width: 50px;">
+            <%= review.recomendation.to_plain_text.truncate(100) %>
+            <% if (review.recomendation.blank?) && (current_user.id != review.user.id) %>
+                <%= review.user.phone %>
+            <% end %>
         </td>
-
-        <td style="width: 50px;"><%= review.recomendation.to_plain_text.truncate(100) %></td>
 
         <% if review.recomendation.blank? %>
             <% if (can? :update, review) && (review.review_date == Date.today) %>
                 <td style="width: 7%;">
-                    <%= link_to t('button.edit_review'), edit_review_path(review), class: "btn btn-outline-primary btn-sm" %>
+                    <%= link_to t('button.edit_review'), edit_review_path(review), class: "btn btn-outline-success btn-sm" %>
                 </td>
             <% end %>
             <% if can? :destroy, review %>
                 <td style="width: 7%;">
-                    <%= button_to t('button.destroy_review'), review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy') }, class: "btn btn-outline-primary btn-sm" %>
+                    <%= button_to t('button.destroy_review'), review,  method: :delete, data: { turbo_confirm: t('button.confirm_destroy_review') }, class: "btn btn-outline-danger btn-sm" %>
                 </td>
             <% end %>
         <% else %>
