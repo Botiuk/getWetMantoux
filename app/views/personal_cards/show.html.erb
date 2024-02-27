@@ -1,7 +1,12 @@
 <h4><%= t('.title') %></h4>
-<%= @personal_card.last_name %>
-<%= @personal_card.first_name %>
-<%= @personal_card.middle_name %>
-<%= @personal_card.date_of_birth %>
-
-<%= link_to t('button.edit'), edit_personal_card_path(@personal_card), class: "btn btn-outline-primary" %>
+<div class="card primary-bg-subtle mb-3" style="max-width: 18rem;">
+  <div class="card-header fw-semibold fs-5">
+    <%= @personal_card.last_name %><br/>
+    <%= @personal_card.first_name %><br/>
+    <%= @personal_card.middle_name %><br/>
+    <%= @personal_card.date_of_birth %>
+  </div>
+  <div class="card-body text-center">
+    <%= link_to t('button.edit'), edit_personal_card_path(@personal_card), class: "btn btn-outline-success btn-sm" %>
+  </div>
+</div>

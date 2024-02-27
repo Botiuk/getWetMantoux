@@ -5,7 +5,7 @@ class PersonalCardsController < ApplicationController
 
   def index
     if current_user.admin?
-      @personal_cards = PersonalCard.all.order(:first_name, :last_name, :middle_name, :date_of_birth)
+      @personal_cards = PersonalCard.all.order(:last_name, :first_name, :middle_name, :date_of_birth)
     else
       @personal_card_id = PersonalCard.where(user_id: current_user.id).pluck(:id)
       redirect_to personal_card_url(@personal_card_id)
@@ -44,6 +44,8 @@ class PersonalCardsController < ApplicationController
 
   def set_personal_card
     @personal_card = PersonalCard.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path
   end
 
   def personal_card_params

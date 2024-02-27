@@ -1,9 +1,11 @@
 <div id="<%= dom_id personal_card %>">
-    <%= personal_card.last_name %>
-    <%= personal_card.first_name %>
-    <%= personal_card.middle_name %>
-    <%= I18n.l(personal_card.date_of_birth) %>
-
-    <%= link_to t('button.edit'), edit_personal_card_path(personal_card), class: "btn btn-outline-primary" %>
-    <%= link_to t('button.show'), personal_card_path(personal_card), class: "btn btn-outline-primary" %>
+    <table class="table text-start table-borderless align-middle table-secondary" style="max-width: 100%;">
+        <tr>
+            <td style="width: 25%;"><%= personal_card.last_name %></td>
+            <td style="width: 25%;"><%= personal_card.first_name %></td>
+            <td style="width: 25%;"><%= personal_card.middle_name %></td>
+            <td style="width: 18%;"><%= I18n.l(personal_card.date_of_birth) %></td>        
+            <td style="width: 7%;"><%= link_to t('button.edit'), edit_personal_card_path(personal_card), class: "btn btn-outline-success btn-sm" %></td>
+        </tr>
+    </table>
 </div>

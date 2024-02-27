@@ -11,30 +11,29 @@
         </div>
     <% end %>
 
-    <div>
+    <div class="row g-3">
 
-      <div>
+      <div class="col-md-4">
         <%= form.label :last_name, t('.last_name'), style: "display: block" %>
         <%= form.text_field :last_name, autofocus: true, class: "form-control" %>
       </div>
 
-      <div>
+      <div class="col-md-4">
         <%= form.label :first_name, t('.first_name'), style: "display: block" %>
         <%= form.text_field :first_name, class: "form-control" %>
       </div>
 
-      <div>
+      <div class="col-md-4">
         <%= form.label :middle_name, t('.middle_name'), style: "display: block" %>
         <%= form.text_field :middle_name, class: "form-control" %>
       </div>
 
-      <div>
+      <div class="col-md-2">
         <%= form.label :date_of_birth, t('.date_of_birth'), style: "display: block" %>
         <%= form.date_field :date_of_birth, max: Date.today, class: "form-control" %>
       </div>
       
-      <br/>
-      <p class="fw-bold text-danger"><%= t('.validations') %></p>
+      <div class="fw-bold text-danger"><%= t('.validations') %></div>
 
       <div>
         <%= form.button nil, class: "btn btn-outline-success" do %>
