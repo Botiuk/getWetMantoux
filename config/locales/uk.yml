@@ -55,6 +55,8 @@ uk:
           vacation: "Відпустка"
       review:
         review_date: "Поле 'Дата огляду'"
+      user:
+        phone: "Номер телефону"
 
   navigation:
     login: "Ввійти"
@@ -160,3 +162,21 @@ uk:
     medical_card:
       title: "Медична картка"
       reviews_empty: "Немає відомостей про попередні огляди"
+
+  users:
+    registrations:
+      new:
+        characters_min: "символів мінімум"
+        phone: "Номер телефону"
+        sign_up: "Зареєструватися"
+      edit:
+        title: "Редагувати профіль"
+        phone: "Номер телефону"
+        new_password: "Новий пароль"
+        new_password_blank: "залиште поле пустим, якщо не хочете змінювати пароль"
+        new_password_confirmation: "Підтвердження нового паролю"
+        characters_min: "символів мінімум"
+        current_password_confirmation: "для пітвердження змін, введіть поточний пароль"
+    sessions:
+      new:
+        log_in: "Ввійти"
