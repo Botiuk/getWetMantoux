@@ -5,7 +5,7 @@ class Ability
 
   def initialize(user)
 
-    can :read, :home
+    can [:read, :contacts], :home
     can [:read, :belonging_doctors], Speciality
     can :read, Doctor
 
