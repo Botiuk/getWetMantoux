@@ -1,5 +1,9 @@
 uk:
   appname: "Мочи Манту!"
+  author: "Svitlana Botiuk"
+  mochymantoo_start: "Клініка названа на честь "
+  mochymantoo: "однойменної книги"
+  mochymantoo_end: " виконувачки обов'язків Міністра охорони здоров'я України (серпень 2016 - серпень 2019), лікаря Уляни Супрун"
 
   home:
     index:

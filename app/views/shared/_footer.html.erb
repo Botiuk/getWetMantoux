@@ -1,0 +1,16 @@
+<div class="p-2 py-md-3 text-body-secondary">
+    <div class="pb-2 font-monospace">
+        <%= t('mochymantoo_start') %>
+        <%= link_to t('mochymantoo'), "https://mochymantoo.com/knizhka-mochi-mantu.html", target: :_blank, class: "text-body-secondary" %>
+        <%= t('mochymantoo_end') %>
+    </div>
+    <div>
+        <%= "\u00A9"%>
+        <% if Date.today.year == 2024 %>
+            2024
+        <% else %>
+            2024-<%= Date.today.year %>
+        <% end %>
+        <%= link_to t('author'), "https://github.com/Botiuk", target: :_blank, class: "text-body-secondary" %>
+    </div>
+</div>  

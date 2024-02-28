@@ -10,16 +10,20 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body style="background-color: #e3f2fd;">
 
     <header>
       <%= render 'shared/header' %>
     </header>
 
-    <main class="p-4">
+    <main class="p-4"  style="background-color: white;">
       <%= render 'shared/flash_messages' %>
       <%= yield %>
     </main>
+
+    <footer class="bd-footer text-center">
+      <%= render 'shared/footer' %>
+    </footer>
 
   </body>
 </html>
