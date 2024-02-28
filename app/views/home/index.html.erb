@@ -1,2 +1,20 @@
-<h1><%= t('.title') %></h1>
-<p><%= t('.description') %></p>
+<div class="container">
+    <% if user_signed_in? %>
+        <h4 class="text-center">        
+        <% if @card.present? %>
+            <% if current_user.personal_card.middle_name.present? %>
+                <%= current_user.personal_card.first_name %> <%= current_user.personal_card.middle_name %>,
+            <% else %>
+                <%= current_user.personal_card.first_name %>,
+            <% end %>
+        <% end %>
+        <%= t('.welcome') %> "<%= t('appname') %>"
+
+    </h4>
+    <% else %>
+        <h1 class="text-center"><%= t('.title') %> "<%= t('appname') %>"</h1>
+    <% end %>
+    <ul type="circle"><%= t('.description_html') %></ul>
+    <h5 class="text-center"><%= t('.conclusion') %></h5>    
+</div>
+
