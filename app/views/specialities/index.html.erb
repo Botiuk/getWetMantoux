@@ -1,11 +1,9 @@
-<div class="row mb-2">    
+<div class="row mb-2">
+    <div class="col"><h4><%= t('.title') %></h4></div>
     <% if can? :create, Speciality %>
-        <div class="col"><h4><%= t('.title_admin') %></h4></div>
         <div class="col text-end">
             <%= link_to t('button.add.speciality'), new_speciality_path, :method => :post, class: "btn btn-outline-success" %>
         </div>
-    <% else %>
-        <div class="col"><h4><%= t('.title') %></h4></div>
     <% end %>
 </div>
 

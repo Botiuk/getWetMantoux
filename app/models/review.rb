@@ -11,27 +11,27 @@ class Review < ApplicationRecord
 
   def self.reviews_index_admin
     Review.close_records_ids
-    Review.where.not(id: @close_record_ids).order(:review_date, :doctor_id)
+    Review.where(review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids).order(:review_date, :id)
   end
 
   def self.reviews_index_doctor(doctor_id)
     Review.close_records_ids
-    Review.where(doctor_id: doctor_id).where.not(id: @close_record_ids).order(:review_date, :user_id)
+    Review.where(doctor_id: doctor_id, review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids).order(:review_date, :id)
   end
 
   def self.reviews_index_user(user_id)
     Review.close_records_ids
-    Review.where(user_id: user_id).where.not(id: @close_record_ids).order(:review_date, :doctor_id)
+    Review.where(user_id: user_id, review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids).order(:review_date, :id)
   end
 
   def self.reviews_medical_card(user_id)
     Review.close_records_ids
-    Review.where(user_id: user_id, id: @close_record_ids).order(:review_date).reverse_order
+    Review.where(user_id: user_id, id: @close_record_ids).order(:review_date, :id).reverse_order
   end
 
   def self.count_doctor_open_reviews(doctor_id, review_date)
     Review.close_records_ids
-    Review.where(doctor_id: doctor_id, review_date: review_date).where.not(id: @close_record_ids).count 
+    Review.where(doctor_id: doctor_id, review_date: review_date).where.not(id: @close_record_ids).count
   end
 
   def self.open_review_for_pair(doctor_id, user_id)

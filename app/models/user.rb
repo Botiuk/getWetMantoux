@@ -32,5 +32,9 @@ class User < ApplicationRecord
   def self.doctor_formhelper(user_id)
     User.where(id: user_id).pluck(:phone, :id)
   end
+
+  def doctor_on_contract?
+    doctor? && doctor.present? && doctor.doctor_status != "fired"
+  end
   
 end

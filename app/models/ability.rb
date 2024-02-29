@@ -11,23 +11,20 @@ class Ability
 
     if user.present?
       can [:read, :create, :update], PersonalCard, user_id: user.id
+      can [:read, :create, :destroy], Review, user_id: user.id
+      can :medical_card, Review
 
-      if user.user?
-        can [:manage, :medical_card], Review, user_id: user.id
-        cannot :update, Review
-      end
-  
-      if user.doctor? && user.doctor.present? && user.doctor.working?
-        can  [:read, :medical_card], Review
+      if user.doctor_on_contract?
+        can :read, Review
         can :update, Review, doctor_id: user.doctor.id
         can :update, Doctor, user_id: user.id
       end
-  
+
       if user.admin?
         can [:read, :create, :update], Speciality
         can [:read, :create, :update], Doctor
         can [:read, :update], PersonalCard
-        can :read, Review
+        can :index, Review
       end
 
     end
