@@ -17,7 +17,7 @@
             <%= form.hidden_field :doctor_id %>
         </div>
 
-        <% if can? :create, Review %>
+        <% if @review.review_date.blank? %>
             <div class="col-md-2">
                 <%= form.label :review_date, t('.review_date'), style: "display: block" %>
                 <%= form.date_field :review_date, min: Date.today, max: (Date.today + 7), class: "form-control" %>
