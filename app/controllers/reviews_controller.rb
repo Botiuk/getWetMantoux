@@ -5,8 +5,10 @@ class ReviewsController < ApplicationController
   def index
     if current_user.admin?
       @reviews = Review.reviews_index_admin
-    elsif current_user.doctor?
+      @my_reviews = Review.reviews_index_user(current_user.id)
+    elsif current_user.doctor_on_contract?
       @reviews = Review.reviews_index_doctor(current_user.doctor.id)
+      @my_reviews = Review.reviews_index_user(current_user.id)
     else
       @reviews = Review.reviews_index_user(current_user.id)
     end
@@ -19,7 +21,10 @@ class ReviewsController < ApplicationController
     open_review_for_pair = Review.open_review_for_pair(params[:doctor_id], current_user.id)
     if open_review_for_pair.blank?
       @review = Review.new(doctor_id: params[:doctor_id])
-      @doctor = Doctor.find(params[:doctor_id])    
+      @doctor = Doctor.find(params[:doctor_id])
+      if @doctor.user_id == current_user.id
+        redirect_to specialities_url, alert: t('alert.new.recursion')
+      end
     else
       redirect_to reviews_url, alert: t('alert.new.present')
     end
@@ -67,7 +72,11 @@ class ReviewsController < ApplicationController
   end
 
   def medical_card
-    @reviews = Review.reviews_medical_card(params[:user_id])
+    if params[:user_id].present? && current_user.doctor_on_contract?
+      @reviews = Review.reviews_medical_card(params[:user_id])
+    else
+      @reviews = Review.reviews_medical_card(current_user.id)
+    end
   end
 
   private
