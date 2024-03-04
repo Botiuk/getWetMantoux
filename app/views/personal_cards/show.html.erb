@@ -7,6 +7,9 @@
     <%= @personal_card.date_of_birth %>
   </div>
   <div class="card-body text-center">
+    <% if can? :update, User %>
+      <%= link_to t('button.show_user'), user_path(id: @personal_card.user_id), class: "btn btn-outline-primary btn-sm" %>
+    <% end %>
     <%= link_to t('button.edit'), edit_personal_card_path(@personal_card), class: "btn btn-outline-success btn-sm" %>
   </div>
 </div>
