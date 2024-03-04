@@ -52,15 +52,17 @@ uk:
         many: "%{count} помилок не дають зберегти цей запис:"
         other: "%{count} помилка:"
 
-  activerecord:
+  activerecord:    
     attributes:
       personal_card:
         first_name: "Поле 'Ім'я'"
         last_name: "Поле 'Прізвище'"
+        middle_name: "Поле 'По-батькові'"
         date_of_birth: "Поле 'Дата народження'"
         user_id: "Ваша особиста картка вже створена і нову не створиш, бо ваш користувач"
       speciality:
         name: "Поле 'Назва спеціальності'"
+        description: "Поле 'Опис спеціальності'"
       doctor:
         user_id: "Поле 'Профіль користувача-лікаря'"
         user: "Поле 'Профіль користувача-лікаря'"
@@ -73,6 +75,10 @@ uk:
         review_date: "Поле 'Дата огляду'"
       user:
         phone: "Номер телефону"
+
+  errors:
+      messages:
+        first_letter: "має починатися з великої літери"
 
   navigation:
     login: "Ввійти"
