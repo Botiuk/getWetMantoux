@@ -1,0 +1,42 @@
+<%= form_with(model: user) do |form| %>
+    <% if user.errors.any? %>
+        <div style="color: red">
+        <h2><%= t 'forms.messages.errors', count: user.errors.count %></h2>
+        <ul>
+            <% user.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+            <% end %>
+        </ul>
+        </div>
+    <% end %>
+
+    <div class="row g-3">
+        <div class="accordion pb-3" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <%= t('.phone_change') %>
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <%= form.label :phone, t('.phone') %>
+                        <%= form.telephone_field :phone %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <%= form.label :role, t('.role'), style: "display: block" %>
+            <%= form.select :role, User.roles.keys.map{ |key| [User.human_enum_name(:role, key), key] }, {:selected => form.object.role}, {:class => "form-select"} %>
+        </div>
+
+        <div>
+            <%= form.button nil, class: "btn btn-outline-success" do %>
+                <%= t('button.submit') %>
+            <% end %>
+        </div>
+    </div>
+
+<% end %>
