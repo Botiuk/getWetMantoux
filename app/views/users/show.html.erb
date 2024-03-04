@@ -1,0 +1,17 @@
+<h4>
+    <%= t('.title') %>
+    <% if @user.personal_card.present? %>
+        <%= @user.personal_card.last_name %> <%= @user.personal_card.first_name %> <%= @user.personal_card.middle_name %>
+    <% end %>
+</h4>
+
+<div class="card primary-bg-subtle mb-3" style="max-width: 18rem;">
+  <div class="card-header fw-semibold fs-5">
+    <%= @user.phone %><br/>
+    <%= User.human_enum_name(:role, @user.role) %>
+  </div>
+  <div class="card-body text-center">
+    <%= link_to t('button.show_personal_card'), personal_card_path(id: @user.personal_card.id), class: "btn btn-outline-primary btn-sm" %>
+    <%= link_to t('button.edit'), edit_user_path(@user), class: "btn btn-outline-success btn-sm" %>
+  </div>
+</div>

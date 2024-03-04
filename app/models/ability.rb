@@ -25,6 +25,7 @@ class Ability
         can [:read, :create, :update], Doctor
         can [:read, :update], PersonalCard
         can :index, Review
+        can [:read, :update], User
       end
 
     end

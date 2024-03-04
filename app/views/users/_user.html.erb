@@ -1,0 +1,21 @@
+<div id="<%= dom_id user %>">
+    <% if user.role == "admin" %>
+        <table class="table text-start table-borderless align-middle table-danger" style="max-width: 100%;">
+    <% elsif user.role == "doctor" %>
+        <table class="table text-start table-borderless align-middle table-info" style="max-width: 100%;">
+    <% else %>
+        <table class="table text-start table-borderless align-middle table-secondary" style="max-width: 100%;">
+    <% end %>
+        <tr>
+            <td style="width: 25%;"><%= user.phone %></td>
+            <td style="width: 16%;"><%= User.human_enum_name(:role, user.role) %></td>
+            <% if user.personal_card.present? %>
+                <td style="width: 15%;"><%= user.personal_card.last_name %></td>
+                <td style="width: 15%;"><%= user.personal_card.first_name %></td>
+                <td style="width: 15%;"><%= user.personal_card.middle_name %></td>
+            <% end %>
+            <td style="width: 7%;"><%= link_to t('button.show'), user_path(user), class: "btn btn-outline-primary btn-sm" %></td>
+            <td style="width: 7%;"><%= link_to t('button.edit'), edit_user_path(user), class: "btn btn-outline-success btn-sm" %></td>
+        </tr>
+        </table>
+</div>

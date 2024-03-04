@@ -1,0 +1,8 @@
+<h4>
+    <%= t('.title') %>
+    <% if @user.personal_card.present? %>
+        <%= @user.personal_card.last_name %> <%= @user.personal_card.first_name %> <%= @user.personal_card.middle_name %>
+    <% end %>
+</h4>
+
+<%= render "form", user: @user %>
