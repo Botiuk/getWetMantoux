@@ -1,12 +1,12 @@
 class Review < ApplicationRecord
   belongs_to :user
   belongs_to :doctor
-  has_rich_text :recomendation
+  has_rich_text :recommendation
 
   validates :review_date, presence: true
 
   def self.close_records_ids
-    @close_record_ids = Review.joins(:rich_text_recomendation).where.not(rich_text_recomendation: {body: [nil, ""]}).pluck(:record_id)
+    @close_record_ids = Review.joins(:rich_text_recommendation).where.not(rich_text_recommendation: {body: [nil, ""]}).pluck(:record_id)
   end
 
   def self.reviews_index_admin

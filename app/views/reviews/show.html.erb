@@ -21,10 +21,10 @@
     (<%= @review.doctor.speciality.name %>)
 </div>
 
-<% if @review.recomendation.present? %>
+<% if @review.recommendation.present? %>
     <div class="my-2">
-        <%= t('.recomendation') %>
-        <div class="border border-light bg-secondary-subtle rounded p-2"><%= @review.recomendation %></div>
+        <%= t('.recommendation') %>
+        <div class="border border-light bg-secondary-subtle rounded p-2"><%= @review.recommendation %></div>
     <div>
 <% end %>
 

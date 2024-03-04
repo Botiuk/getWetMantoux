@@ -20,13 +20,13 @@
         <% end %>
 
         <td style="width: 50px;">
-            <%= review.recomendation.to_plain_text.truncate(100) %>
-            <% if (review.recomendation.blank?) && (current_user.id != review.user.id) %>
+            <%= review.recommendation.to_plain_text.truncate(100) %>
+            <% if (review.recommendation.blank?) && (current_user.id != review.user.id) %>
                 <%= review.user.phone %>
             <% end %>
         </td>
 
-        <% if review.recomendation.blank? %>
+        <% if review.recommendation.blank? %>
             <% if (can? :update, review) && (review.review_date == Date.today) %>
                 <td style="width: 7%;">
                     <%= link_to t('button.edit_review'), edit_review_path(review), class: "btn btn-outline-success btn-sm" %>

@@ -33,7 +33,7 @@ class ReviewsController < ApplicationController
   end
 
   def edit
-    if @review.recomendation.present?
+    if @review.recommendation.present?
       redirect_to reviews_url, alert: t('alert.edit.close')
     end
   end
@@ -63,7 +63,7 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-    if @review.recomendation.blank?
+    if @review.recommendation.blank?
       @review.destroy
       redirect_to reviews_url, notice: t('notice.destroy.review')
     else
@@ -88,7 +88,7 @@ class ReviewsController < ApplicationController
     end
 
     def review_params
-      params.require(:review).permit(:user_id, :doctor_id, :review_date, :recomendation)
+      params.require(:review).permit(:user_id, :doctor_id, :review_date, :recommendation)
     end
 
 end
