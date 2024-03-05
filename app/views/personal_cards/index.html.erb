@@ -1,5 +1,13 @@
 <h4><%= t('.title') %></h4>
 
+<div class="text-end pb-2">
+    <%= form_tag(personal_cards_search_path, :method => "get") do %>
+        <%= label_tag(:last_name, t('.search_label')) %>
+        <%= text_field_tag(:last_name, nil, placeholder: t('.search_placeholder')) %>
+        <%= button_tag(t('button.search'), type: "submit", :name => nil, class: "btn btn-outline-primary") %>
+    <% end %>
+</div>
+
 <% @personal_cards.each do |personal_card| %>
     <%= render personal_card %>
 <% end %>

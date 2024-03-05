@@ -12,6 +12,15 @@ class PersonalCardsController < ApplicationController
     end
   end
 
+  def search
+    if params[:last_name].blank?
+      redirect_to personal_cards_url, alert: t('alert.search.personal_card')
+    else
+      @personal_cards = PersonalCard.where('lower(last_name) LIKE ?', "%" + params[:last_name].downcase + "%")
+      @search_params = params[:last_name]
+    end
+  end
+
   def show
   end
 

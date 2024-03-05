@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'specialities/belonging_doctors', to: 'specialities#belonging_doctors'
   get 'reviews/medical_card', to: 'reviews#medical_card'
   get 'contacts', to: 'home#contacts'
+  get 'personal_cards/search', to: 'personal_cards#search'
 
   resources :personal_cards, :specialities, :doctors, :reviews
 
