@@ -1,6 +1,6 @@
 <div class="container">
     <% if user_signed_in? %>
-        <h4 class="text-center">        
+        <h4 class="text-center">
         <% if @card.present? %>
             <% if current_user.personal_card.middle_name.present? %>
                 <%= current_user.personal_card.first_name %> <%= current_user.personal_card.middle_name %>,
@@ -9,12 +9,27 @@
             <% end %>
         <% end %>
         <%= t('.welcome') %> "<%= t('appname') %>"
+        </h4>
+        <h6 class="text-start"><%= t('.can_sign_in') %></h5>
+        <ul type="circle"><%= t('.ability_sign_in_html') %></ul>
 
-    </h4>
+        <% if current_user.admin? %>
+            <h6 class="text-start"><%= t('.can_admin') %></h5>
+            <ul type="circle"><%= t('.ability_admin_html') %></ul>
+        <% end %>
+        
+        <% if current_user.doctor_on_contract? %>
+            <h6 class="text-start"><%= t('.can_doctor_working') %></h5>
+            <ul type="circle"><%= t('.ability_doctor_working_html') %></ul>
+        <% end %>
     <% else %>
         <h1 class="text-center"><%= t('.title') %> "<%= t('appname') %>"</h1>
+        <h6 class="text-start"><%= t('.can_if_sign_in') %></h5>
+        <ul type="circle"><%= t('.ability_sign_in_html') %></ul>
     <% end %>
+
+    <h6 class="text-start"><%= t('.rules') %></h5>
     <ul type="circle"><%= t('.description_html') %></ul>
-    <h5 class="text-center"><%= t('.conclusion') %></h5>    
+    <h5 class="text-center"><%= t('.conclusion') %></h5>
 </div>
 

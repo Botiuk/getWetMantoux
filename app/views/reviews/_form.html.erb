@@ -10,7 +10,7 @@
         <% if @review.review_date.blank? %>
             <div class="col-md-2">
                 <%= form.label :review_date, t('.review_date'), style: "display: block" %>
-                <%= form.date_field :review_date, min: Date.today, max: (Date.today + 7), class: "form-control" %>
+                <%= form.date_field :review_date, value: Date.today, min: Date.today, max: (Date.today + 7), class: "form-control" %>
             </div>
         <% end %>
 
