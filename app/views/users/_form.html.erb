@@ -1,14 +1,5 @@
 <%= form_with(model: user) do |form| %>
-    <% if user.errors.any? %>
-        <div style="color: red">
-        <h2><%= t 'forms.messages.errors', count: user.errors.count %></h2>
-        <ul>
-            <% user.errors.each do |error| %>
-            <li><%= error.full_message %></li>
-            <% end %>
-        </ul>
-        </div>
-    <% end %>
+    <%= render 'shared/form_errors_messages', object: form.object %>
 
     <div class="row g-3">
         <div class="accordion pb-3" id="accordionExample">
