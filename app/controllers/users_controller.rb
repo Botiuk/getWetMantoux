@@ -6,6 +6,15 @@ class UsersController < ApplicationController
         @users = User.all.order(:phone)
     end
 
+    def search
+        if params[:phone].blank?
+          redirect_to personal_cards_url, alert: t('alert.search.user')
+        else
+          @users = User.where('phone LIKE ?', "%" + params[:phone] + "%")
+          @search_params = params[:phone]
+        end
+    end
+
     def show
     end
 

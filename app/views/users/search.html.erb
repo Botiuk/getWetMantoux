@@ -1,0 +1,9 @@
+<h4><%= t('.title') %> "<%= @search_params %>" </h4>
+
+<% if @users.present? %>
+    <% @users.each do |user| %>
+        <%= render user %>
+    <% end %>
+<% else %>
+    <p class="fw-semibold text-danger"><%= t('.search_empty') %></p>
+<% end %>

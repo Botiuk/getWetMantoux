@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
+
+  get 'users/search', to: 'users#search'
+
   scope '/admin' do
     resources :users
   end
