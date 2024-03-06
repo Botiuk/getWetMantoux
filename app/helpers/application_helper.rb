@@ -1,4 +1,5 @@
 module ApplicationHelper
+    include Pagy::Frontend
 
     def find_user_personal_card
         if user_signed_in?
