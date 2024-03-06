@@ -3,16 +3,20 @@ class UsersController < ApplicationController
     load_and_authorize_resource
 
     def index
-        @users = User.all
+        @pagy, @users = pagy(User.all, items: 20)
+    rescue Pagy::OverflowError
+        redirect_to users_url(page: 1)
     end
 
     def search
         if params[:phone].blank?
-          redirect_to users_url, alert: t('alert.search.user')
+            redirect_to users_url, alert: t('alert.search.user')
         else
-          @users = User.where('phone LIKE ?', "%" + params[:phone] + "%")
-          @search_params = params[:phone]
+            @pagy, @users = pagy(User.where('phone LIKE ?', "%" + params[:phone] + "%"), items: 20)
+            @search_params = params[:phone]
         end
+    rescue Pagy::OverflowError
+        redirect_to users_url(page: 1)
     end
 
     def show

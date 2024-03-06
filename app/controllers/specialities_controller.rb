@@ -5,11 +5,13 @@ class SpecialitiesController < ApplicationController
 
   def index
     if user_signed_in? && current_user.admin?
-      @specialities = Speciality.all
+      @pagy, @specialities = pagy(Speciality.all, items: 20)
     else
       active_speciality_ids = Doctor.active_specialities
-      @specialities = Speciality.where(id: active_speciality_ids)
+      @pagy, @specialities = pagy(Speciality.where(id: active_speciality_ids), items: 20)
     end
+  rescue Pagy::OverflowError
+    redirect_to specialities_url(page: 1)
   end
 
   def new
@@ -37,7 +39,9 @@ class SpecialitiesController < ApplicationController
   end
 
   def belonging_doctors
-    @doctors = Doctor.where(speciality_id: params[:id]).where.not(doctor_status: "fired")
+    @pagy, @doctors = pagy(Doctor.where(speciality_id: params[:id]).where.not(doctor_status: "fired"), items: 12)
+  rescue Pagy::OverflowError
+    redirect_to specialities_url(page: 1)
   end
 
   private

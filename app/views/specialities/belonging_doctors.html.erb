@@ -10,3 +10,9 @@
 <% else %>
     <p class="fw-semibold text-danger"><%= t('.doctors_empty') %></p>
 <% end %>
+
+<% if @pagy.pages > 1 %>
+    <div class="d-flex justify-content-center">
+        <%== pagy_bootstrap_nav(@pagy) %>
+    </div>
+<% end %>

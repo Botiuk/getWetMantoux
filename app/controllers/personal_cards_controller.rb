@@ -5,20 +5,24 @@ class PersonalCardsController < ApplicationController
 
   def index
     if current_user.admin?
-      @personal_cards = PersonalCard.all
+      @pagy, @personal_cards = pagy(PersonalCard.all, items: 20)
     else
       @personal_card_id = PersonalCard.where(user_id: current_user.id).pluck(:id)
       redirect_to personal_card_url(@personal_card_id)
     end
+  rescue Pagy::OverflowError
+    redirect_to personal_cards_url(page: 1)
   end
 
   def search
     if params[:last_name].blank?
       redirect_to personal_cards_url, alert: t('alert.search.personal_card')
     else
-      @personal_cards = PersonalCard.where('lower(last_name) LIKE ?', "%" + params[:last_name].downcase + "%")
+      @pagy, @personal_cards = pagy(PersonalCard.where('lower(last_name) LIKE ?', "%" + params[:last_name].downcase + "%"), items: 20)
       @search_params = params[:last_name]
     end
+  rescue Pagy::OverflowError
+    redirect_to personal_cards_url(page: 1)
   end
 
   def show

@@ -4,14 +4,16 @@ class ReviewsController < ApplicationController
 
   def index
     if current_user.admin?
-      @reviews = Review.reviews_index_admin
+      @pagy, @reviews = pagy(Review.reviews_index_admin, items: 20)
       @my_reviews = Review.reviews_index_user(current_user.id)
     elsif current_user.doctor_on_contract?
-      @reviews = Review.reviews_index_doctor(current_user.doctor.id)
+      @pagy, @reviews = pagy(Review.reviews_index_doctor(current_user.doctor.id), items: 20)
       @my_reviews = Review.reviews_index_user(current_user.id)
     else
-      @reviews = Review.reviews_index_user(current_user.id)
+      @pagy, @reviews = pagy(Review.reviews_index_user(current_user.id), items: 10)
     end
+  rescue Pagy::OverflowError
+    redirect_to reviews_url(page: 1)
   end
 
   def show
@@ -73,10 +75,12 @@ class ReviewsController < ApplicationController
 
   def medical_card
     if params[:user_id].present? && current_user.doctor_on_contract?
-      @reviews = Review.reviews_medical_card(params[:user_id])
+      @pagy, @reviews = pagy(Review.reviews_medical_card(params[:user_id]), items: 10)
     else
-      @reviews = Review.reviews_medical_card(current_user.id)
+      @pagy, @reviews = pagy(Review.reviews_medical_card(current_user.id), items: 10)
     end
+  rescue Pagy::OverflowError
+    redirect_to reviews_medical_card_path(page: 1)
   end
 
   private

@@ -6,10 +6,12 @@ class DoctorsController < ApplicationController
 
   def index
     if user_signed_in? && current_user.admin?
-      @doctors = Doctor.all.order_by_personal_card
+      @pagy, @doctors = pagy(Doctor.all.order_by_personal_card, items: 12)
     else
-      @doctors = Doctor.where.not(doctor_status: "fired").order_by_personal_card
+      @pagy, @doctors = pagy(Doctor.where.not(doctor_status: "fired").order_by_personal_card, items: 12)
     end
+  rescue Pagy::OverflowError
+    redirect_to doctors_url(page: 1)
   end
 
   def show
