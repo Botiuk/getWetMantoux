@@ -5,7 +5,7 @@ class PersonalCardsController < ApplicationController
 
   def index
     if current_user.admin?
-      @personal_cards = PersonalCard.all.order(:last_name, :first_name, :middle_name, :date_of_birth)
+      @personal_cards = PersonalCard.all
     else
       @personal_card_id = PersonalCard.where(user_id: current_user.id).pluck(:id)
       redirect_to personal_card_url(@personal_card_id)

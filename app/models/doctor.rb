@@ -15,4 +15,6 @@ class Doctor < ApplicationRecord
     Doctor.where.not(doctor_status: "fired").group(:speciality_id).pluck(:speciality_id)
   end
 
+  scope :order_by_personal_card, -> { joins(:personal_card).order('personal_cards.last_name, personal_cards.first_name, personal_cards.middle_name') }
+
 end

@@ -6,9 +6,9 @@ class DoctorsController < ApplicationController
 
   def index
     if user_signed_in? && current_user.admin?
-      @doctors = Doctor.all.order(:doctor_status)
+      @doctors = Doctor.all.order_by_personal_card
     else
-      @doctors = Doctor.where.not(doctor_status: "fired")
+      @doctors = Doctor.where.not(doctor_status: "fired").order_by_personal_card
     end
   end
 

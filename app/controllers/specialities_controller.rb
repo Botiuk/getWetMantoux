@@ -5,11 +5,11 @@ class SpecialitiesController < ApplicationController
 
   def index
     if user_signed_in? && current_user.admin?
-      @specialities = Speciality.all.order(:name)
+      @specialities = Speciality.all
     else
       active_speciality_ids = Doctor.active_specialities
-      @specialities = Speciality.where(id: active_speciality_ids).order(:name)
-    end    
+      @specialities = Speciality.where(id: active_speciality_ids)
+    end
   end
 
   def new

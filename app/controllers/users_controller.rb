@@ -3,12 +3,12 @@ class UsersController < ApplicationController
     load_and_authorize_resource
 
     def index
-        @users = User.all.order(:phone)
+        @users = User.all
     end
 
     def search
         if params[:phone].blank?
-          redirect_to personal_cards_url, alert: t('alert.search.user')
+          redirect_to users_url, alert: t('alert.search.user')
         else
           @users = User.where('phone LIKE ?', "%" + params[:phone] + "%")
           @search_params = params[:phone]
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     end
 
     def edit
-        if @user.role == "doctor" && @user.doctor.present? && @user.doctor.doctor_status != "fired"
+        if @user.doctor_on_contract?
             redirect_to doctors_url, alert: t('alert.change_doctor_role')
         end
         if @user.id == current_user.id

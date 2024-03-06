@@ -5,28 +5,30 @@ class Review < ApplicationRecord
 
   validates :review_date, presence: true
 
+  default_scope { order(:review_date, :id) }
+
   def self.close_records_ids
     @close_record_ids = Review.joins(:rich_text_recommendation).where.not(rich_text_recommendation: {body: [nil, ""]}).pluck(:record_id)
   end
 
   def self.reviews_index_admin
     Review.close_records_ids
-    Review.where(review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids).order(:review_date, :id)
+    Review.where(review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids)
   end
 
   def self.reviews_index_doctor(doctor_id)
     Review.close_records_ids
-    Review.where(doctor_id: doctor_id, review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids).order(:review_date, :id)
+    Review.where(doctor_id: doctor_id, review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids)
   end
 
   def self.reviews_index_user(user_id)
     Review.close_records_ids
-    Review.where(user_id: user_id, review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids).order(:review_date, :id)
+    Review.where(user_id: user_id, review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids)
   end
 
   def self.reviews_medical_card(user_id)
     Review.close_records_ids
-    Review.where(user_id: user_id, id: @close_record_ids).order(:review_date, :id).reverse_order
+    Review.where(user_id: user_id, id: @close_record_ids).reverse_order
   end
 
   def self.count_doctor_open_reviews(doctor_id, review_date)

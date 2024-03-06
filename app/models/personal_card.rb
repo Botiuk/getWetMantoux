@@ -10,4 +10,6 @@ class PersonalCard < ApplicationRecord
     record.errors.add(attr, I18n.t('errors.messages.first_letter')) if /\A[[:lower:]]/.match?(value)
   end
 
+  default_scope { order(:last_name, :first_name, :middle_name, :date_of_birth) }
+
 end

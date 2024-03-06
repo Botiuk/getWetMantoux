@@ -7,8 +7,10 @@ class Speciality < ApplicationRecord
         record.errors.add(attr, I18n.t('errors.messages.first_letter')) if /\A[[:lower:]]/.match?(value)
     end
 
+    default_scope { order(:name) }
+
     def self.formhelper
-        Speciality.order(:name).pluck(:name, :id)
+        Speciality.pluck(:name, :id)
     end
 
 end

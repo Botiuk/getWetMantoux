@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_one :doctor
   has_many :reviews
 
+  default_scope { order(:phone) }
+
   def email_required?
     false
   end
