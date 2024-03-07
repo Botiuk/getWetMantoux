@@ -25,7 +25,7 @@ module GetWetMantoux
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Supported locales
-    I18n.available_locales = [:uk]
+    I18n.available_locales = [:uk, :en]
 
     # Default locale
     I18n.default_locale = :uk
