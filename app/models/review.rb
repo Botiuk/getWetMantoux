@@ -7,13 +7,15 @@ class Review < ApplicationRecord
 
   default_scope { order(:review_date, :id) }
 
+  scope :order_by_doctors, -> { joins(:doctor).order('review_date, doctors.speciality_id, doctors.id, id') }
+
   def self.close_records_ids
     @close_record_ids = Review.joins(:rich_text_recommendation).where.not(rich_text_recommendation: {body: [nil, ""]}).pluck(:record_id)
   end
 
   def self.reviews_index_admin
     Review.close_records_ids
-    Review.where(review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids)
+    Review.unscoped.where(review_date: Date.today..(Date.today+7)).where.not(id: @close_record_ids).order_by_doctors
   end
 
   def self.reviews_index_doctor(doctor_id)

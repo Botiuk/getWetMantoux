@@ -40,9 +40,7 @@
 <% if can? :create, Review %>
     <% if @doctor.working? %>
         <% unless current_user.doctor? && current_user.doctor.id == @doctor.id %>
-            <div>
-                <%= link_to t('button.add.review'), new_review_path(:doctor_id => @doctor.id), method: :post, class: "btn btn-outline-success btn-sm" %>
-            </div>
+            <%= link_to t('button.add.review'), new_review_path(:doctor_id => @doctor.id), method: :post, class: "btn btn-outline-success btn-sm" %>
         <% end %>
     <% end %>
     <% if @doctor.vacation? %>
