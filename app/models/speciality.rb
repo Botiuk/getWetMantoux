@@ -1,5 +1,5 @@
 class Speciality < ApplicationRecord
-    has_many :doctors, dependent: :destroy
+    has_many :doctors
 
     validates :name, presence: true, uniqueness: true
 
