@@ -4,9 +4,11 @@
 <% end %>
 
 <% if @doctors.present? %>
-    <% @doctors.each do |doctor| %>
-        <%= render 'doctors/doctor', doctor: doctor %>
-    <% end %>
+    <div class="row">
+        <% @doctors.each do |doctor| %>
+            <%= render 'doctors/doctor', doctor: doctor %>
+        <% end %>
+    </div>
 <% else %>
     <p class="fw-semibold text-danger"><%= t('.doctors_empty') %></p>
 <% end %>
