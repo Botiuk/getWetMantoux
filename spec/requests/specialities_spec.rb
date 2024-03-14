@@ -7,16 +7,31 @@ RSpec.describe "Specialities", type: :request do
       expect(current_path).to eq(specialities_path)
     end
 
-    it "cannot creates and redirects to the sign_in page" do
+    it "can read speciality belonging_doctors, speciality has doctor with personal card" do
+      speciality = FactoryBot.create(:speciality)
+      doctor = FactoryBot.create(:doctor, speciality: speciality)
+      FactoryBot.create(:personal_card, user: doctor.user)
+      visit "/specialities/belonging_doctors?id=#{speciality.id}"
+      expect(page).to have_text(speciality.name)
+      expect(page).to have_text(doctor.personal_card.last_name)
+    end
+
+    it "can read speciality belonging_doctors, speciality hasnot doctor" do
+      speciality = FactoryBot.create(:speciality)
+      visit "/specialities/belonging_doctors?id=#{speciality.id}"
+      expect(page).to have_text(speciality.name)
+      expect(page).to have_text(I18n.t('specialities.belonging_doctors.doctors_empty'))
+    end
+
+    it "cannot creates speciality and redirects to the sign_in page" do
       visit '/specialities/new'
       expect(current_path).to eq(new_user_session_path)
       expect(page).to have_text(I18n.t('devise.failure.unauthenticated'))
     end
 
     it "cannot updates speciality and redirects to the sign_in page" do
-      speciality = Speciality.create(name: "New speciality")
+      speciality = FactoryBot.create(:speciality)
       visit "/specialities/#{speciality.id}/edit"
-
       expect(current_path).to eq(new_user_session_path)
       expect(page).to have_text(I18n.t('devise.failure.unauthenticated'))
     end
@@ -24,45 +39,37 @@ RSpec.describe "Specialities", type: :request do
 
   describe "user-admin management" do
     before :each do
-      admin_user = User.create(phone: "0987654", password: "password", role: "admin")
-      PersonalCard.create(user_id: admin_user.id, last_name: "Admin", first_name: "Admin", date_of_birth: "2000-01-01")
-      visit '/users/sign_in'
-      fill_in 'user_phone', with: "0987654"
-      fill_in 'user_password', with: "password"
-      click_button I18n.t('users.sessions.new.log_in')
+      admin_user = FactoryBot.create(:user, role: "admin")
+      FactoryBot.create(:personal_card, user: admin_user)
+      login_as(admin_user, :scope => :user)
     end
 
     it "creates speciality and redirects to the specialities page" do
       visit '/specialities/new'
-      expect(current_path).to eq(new_speciality_path)
-      fill_in I18n.t('specialities.form.name'), with: "Family doctor"
-      fill_in I18n.t('specialities.form.description'), with: "Some description about family doctor speciality"
-      click_button I18n.t('button.submit')
-
+        fill_in I18n.t('specialities.form.name'), with: "Family doctor"
+        fill_in I18n.t('specialities.form.description'), with: "Some description about family doctor speciality"
+        click_button I18n.t('button.submit')
       expect(current_path).to eq(specialities_path)
       expect(page).to have_text(I18n.t('notice.create.speciality'))
     end
 
     it "updates speciality and redirects to the specialities page" do
-      speciality = Speciality.create(name: "New speciality")
+      speciality = FactoryBot.create(:speciality)
       visit "/specialities/#{speciality.id}/edit"
-      expect(current_path).to eq(edit_speciality_path(speciality))
-      fill_in I18n.t('specialities.form.name'), with: "Edit speciality"
-      click_button I18n.t('button.submit')
-
+        fill_in I18n.t('specialities.form.name'), with: "Edit speciality"
+        click_button I18n.t('button.submit')
       expect(current_path).to eq(specialities_path)
       expect(page).to have_text(I18n.t('notice.update.speciality'))
     end
+
   end
 
-  describe "user-doctor management" do
+  describe "user-doctor-not-fired management" do
     before :each do
-      doctor_user = User.create(phone: "123098", password: "password", role: "doctor")
-      PersonalCard.create(user_id: doctor_user.id, last_name: "Doctor", first_name: "Doctor", date_of_birth: "2000-01-01")
-      visit '/users/sign_in'
-      fill_in 'user_phone', with: "123098"
-      fill_in 'user_password', with: "password"
-      click_button I18n.t('users.sessions.new.log_in')
+      doctor_user = FactoryBot.create(:user, role: "doctor")
+      FactoryBot.create(:personal_card, user: doctor_user)
+      FactoryBot.create(:doctor, user: doctor_user)
+      login_as(doctor_user, :scope => :user)
     end
 
     it "cannot creates and redirects to the root page" do
@@ -72,9 +79,30 @@ RSpec.describe "Specialities", type: :request do
     end
 
     it "cannot updates speciality and redirects to the root page" do
-      speciality = Speciality.create(name: "New speciality")
+      speciality = FactoryBot.create(:speciality)
       visit "/specialities/#{speciality.id}/edit"
+      expect(current_path).to eq(root_path)
+      expect(page).to have_text(I18n.t('alert.access_denied'))
+    end
+  end
 
+  describe "user-doctor-fired management" do
+    before :each do
+      doctor_user = FactoryBot.create(:user, role: "doctor")
+      FactoryBot.create(:personal_card, user: doctor_user)
+      FactoryBot.create(:doctor, user: doctor_user, doctor_status: "fired")
+      login_as(doctor_user, :scope => :user)
+    end
+
+    it "cannot creates and redirects to the root page" do
+      visit '/specialities/new'
+      expect(current_path).to eq(root_path)
+      expect(page).to have_text(I18n.t('alert.access_denied'))
+    end
+
+    it "cannot updates speciality and redirects to the root page" do
+      speciality = FactoryBot.create(:speciality)
+      visit "/specialities/#{speciality.id}/edit"
       expect(current_path).to eq(root_path)
       expect(page).to have_text(I18n.t('alert.access_denied'))
     end
@@ -82,12 +110,9 @@ RSpec.describe "Specialities", type: :request do
 
   describe "user-user management" do
     before :each do
-      user_user = User.create(phone: "678905", password: "password")
-      PersonalCard.create(user_id: user_user.id, last_name: "User", first_name: "User", date_of_birth: "2000-01-01")
-      visit '/users/sign_in'
-      fill_in 'user_phone', with: "678905"
-      fill_in 'user_password', with: "password"
-      click_button I18n.t('users.sessions.new.log_in')
+      user_user = FactoryBot.create(:user)
+      FactoryBot.create(:personal_card, user: user_user)
+      login_as(user_user, :scope => :user)
     end
 
     it "cannot creates and redirects to the root page" do
@@ -97,9 +122,8 @@ RSpec.describe "Specialities", type: :request do
     end
 
     it "cannot updates speciality and redirects to the root page" do
-      speciality = Speciality.create(name: "New speciality")
+      speciality = FactoryBot.create(:speciality)
       visit "/specialities/#{speciality.id}/edit"
-
       expect(current_path).to eq(root_path)
       expect(page).to have_text(I18n.t('alert.access_denied'))
     end
