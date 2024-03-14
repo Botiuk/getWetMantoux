@@ -30,8 +30,8 @@ RSpec.describe User, type: :model do
         end
 
         it "is not valid with not unique phone" do
-            user = create(:user, phone: "123456709878")
-            user_two = build(:user, phone: "123456709878")
+            user_one = create(:user)
+            user_two = build(:user, phone: user_one.phone)
             expect(user_two).to_not be_valid
         end
     end

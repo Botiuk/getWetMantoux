@@ -30,8 +30,8 @@ RSpec.describe Speciality, type: :model do
         end
 
         it "is not valid with not unique name" do
-            speciality = create(:speciality, name: "Science")
-            speciality_two = build(:speciality, name: "Science")
+            speciality_one = create(:speciality)
+            speciality_two = build(:speciality, name: speciality_one.name)
             expect(speciality_two).to_not be_valid
         end
     end

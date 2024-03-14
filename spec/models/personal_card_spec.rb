@@ -50,8 +50,8 @@ RSpec.describe PersonalCard, type: :model do
         end
 
         it "is not valid with not unique user_id" do
-            personal_card = create(:personal_card, user_id: 123)
-            personal_card_two = build(:personal_card, user_id: 123)
+            personal_card_one = create(:personal_card)
+            personal_card_two = build(:personal_card, user: personal_card_one.user)
             expect(personal_card_two).to_not be_valid
         end
     end
