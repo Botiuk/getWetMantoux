@@ -66,5 +66,5 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   config.include Capybara::DSL
   config.include Warden::Test::Helpers
-  config.include ActionText::SystemTestHelper, type: :system
+  config.include ActionText::SystemTestHelper, type: :feature
 end
