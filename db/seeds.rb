@@ -2,50 +2,43 @@ require "faker"
 
 case Rails.env
 when "development"
-    
+
     User.create(
-        id: 1,
         phone: "0971837132",
         password: ENV['SEEDS_PASS'],
         password_confirmation: ENV['SEEDS_PASS'],
-        role: 2
+        role: "admin"
     )
 
     User.create(
-        id: 2,
         phone: "1234567890",
         password: ENV['SEEDS_PASS'],
         password_confirmation: ENV['SEEDS_PASS'],
-        role: 0
+        role: "doctor"
     )
 
     User.create(
-        id: 3,
         phone: "0987654321",
         password: ENV['SEEDS_PASS'],
-        password_confirmation: ENV['SEEDS_PASS'],
-        role: 1
+        password_confirmation: ENV['SEEDS_PASS']
     )
 
-    (4..15).each do |id|
+    12.times do
         password = Faker::Internet.password(min_length: 6)
         User.create(
-            id: id,
             phone: Faker::Number.unique.number(digits: 8),
             password: password,
             password_confirmation: password,
-            role: 1
+            role: "doctor"
         )
     end
 
-    (16..100).each do |id|
+    85.times do
         password = Faker::Internet.password(min_length: 6)
         User.create(
-            id: id,
             phone: Faker::Number.unique.number(digits: 9),
             password: password,
-            password_confirmation: password,
-            role: 0
+            password_confirmation: password
         )
     end
 
@@ -65,7 +58,8 @@ when "development"
         )
     end
 
-    (3..15).each do |user_id|
+    doctor_user_id = User.where(role: "doctor").pluck(:id)
+    doctor_user_id.each do |user_id|
         Doctor.create(
             user_id: user_id,
             speciality_id: rand(1..10),
@@ -73,12 +67,28 @@ when "development"
         )
     end
 
-    Doctor.all.each do |doctor|
+    doctor_id = Doctor.pluck(:id)
+        ActiveStorage::Blob.create!(
+            key: 'pbcj80wo1ggewlfs6zfrjqhg93va',
+            filename: 'doctor_empty_photo.jpg',
+            content_type: 'image/jpeg',
+            metadata: '{"identified":true,"width":380,"height":380,"analyzed":true}',
+            service_name: 'cloudinary',
+            byte_size: 5704,
+            checksum: 'Yp8xTVxnrsK16TZ6wJaPbw=='
+        )
+    doctor_id.each do |record_id|
         ActionText::RichText.create!(
             record_type: 'Doctor',
-            record_id: doctor.id,
+            record_id: record_id,
             name: 'doctor_info',
             body: Faker::Lorem.paragraph
+        )
+        ActiveStorage::Attachment.create!(
+            record_type: 'Doctor',
+            record_id: record_id,
+            name: 'doctor_photo',
+            blob_id: 1
         )
     end
 
@@ -90,10 +100,11 @@ when "development"
         )
     end
 
-    Review.all.each do |review|
+    review_id = Review.pluck(:id)
+    review_id.each do |record_id|
         ActionText::RichText.create!(
             record_type: 'Review',
-            record_id: review.id,
+            record_id: record_id,
             name: 'recommendation',
             body: Faker::Lorem.paragraph_by_chars
         )
@@ -113,7 +124,7 @@ when "production"
     user.update!(
         password: ENV['SEEDS_PASS'],
         password_confirmation: ENV['SEEDS_PASS'],
-        role: 2
+        role: "admin"
     )
 
 end
