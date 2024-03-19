@@ -1,15 +1,14 @@
 require 'rails_helper'
 
-RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
+RSpec.feature "Reviews", driver: :selenium_chrome, js: true, type: :feature do
 
-    scenario "doctor wrote recomendation, after that cannot edit review, patient read doctor recommendation in medical card", js: true do
+    scenario "doctor wrote recomendation, after that cannot edit review, patient read doctor recommendation in medical card" do
         review = FactoryBot.create(:review, review_date: Date.today)
         FactoryBot.create(:personal_card, user: review.doctor.user)
         FactoryBot.create(:personal_card, user: review.user)
 
         login_as(review.user, :scope => :user)
             visit "/reviews"
-            expect(page).to have_selector("div#review_#{review.id}")
             within("div#review_#{review.id}") do
                 expect(page).to have_text I18n.t('button.destroy_review')
             end
@@ -30,13 +29,11 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
 
             expect(page).to have_text I18n.t('notice.update.review')
             expect(current_path).to eq(reviews_path)
+            expect(page).not_to have_selector("div#review_#{review.id}")
 
             visit "/reviews/#{review.id}/edit"
             expect(page).to have_text I18n.t('alert.edit.close')
             expect(current_path).to eq(reviews_path)
-
-            visit "/reviews"
-            expect(page).not_to have_selector("div#review_#{review.id}")
         logout(:user)
 
         login_as(review.user, :scope => :user)
@@ -45,7 +42,6 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
             expect(page).not_to have_text("Some doctor recommendation.")
 
             visit "/reviews/medical_card"
-            expect(page).to have_selector("div#review_#{review.id}")
             within("div#review_#{review.id}") do
                 expect(page).to have_text("Some doctor recommendation.")
                 click_link I18n.t('button.show')
@@ -53,6 +49,9 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
             expect(page).to have_text I18n.t('reviews.show.title')
             expect(current_path).to eq(review_path(review))
             expect(page).to have_text("Some doctor recommendation.")
+            click_link I18n.t('button.back')
+            expect(page).to have_text I18n.t('reviews.medical_card.title')
+            expect(current_path).to eq(reviews_medical_card_path)
         logout(:user)
     end
 
@@ -106,12 +105,32 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
         logout(:user)
     end
 
-    scenario "user cannot make an appointment with the same doctor" do
+    scenario "user makes an appointment through doctor show page" do
         doctor = FactoryBot.create(:doctor)
         patient_user = FactoryBot.create(:user)
         FactoryBot.create(:personal_card, user: doctor.user)
         FactoryBot.create(:personal_card, user: patient_user)
-        FactoryBot.create(:review, user: patient_user, doctor: doctor)
+
+        login_as(patient_user, :scope => :user)
+            visit "/doctors/#{doctor.id}"
+            click_link I18n.t('button.add.review')
+
+            expect(page).to have_text I18n.t('reviews.new.title')
+            expect(current_path).to eq(new_review_path)
+            fill_in I18n.t('reviews.form.review_date'), with: (Date.today + 3)
+            click_button I18n.t('button.submit')
+
+            expect(page).to have_text I18n.t('notice.create.review')
+            expect(current_path).to eq(reviews_path)
+        logout(:user)
+    end
+
+    scenario "user creates appointment when the date of old review passed (without recommendation) and cannot make a second new appointment with the same doctor" do
+        doctor = FactoryBot.create(:doctor)
+        patient_user = FactoryBot.create(:user)
+        FactoryBot.create(:personal_card, user: doctor.user)
+        FactoryBot.create(:personal_card, user: patient_user)
+        FactoryBot.create(:review, review_date: (Date.today - 1), user: patient_user, doctor: doctor)
 
         login_as(patient_user, :scope => :user)
             visit "/doctors"
@@ -119,7 +138,66 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
                 click_link I18n.t('button.add.review')
             end
 
+            expect(page).to have_text I18n.t('reviews.new.title')
+            expect(current_path).to eq(new_review_path)
+            fill_in I18n.t('reviews.form.review_date'), with: (Date.today)
+            click_button I18n.t('button.submit')
+
+            expect(page).to have_text I18n.t('notice.create.review')
+            expect(current_path).to eq(reviews_path)
+
+            visit "/doctors"
+            within("div#doctor_#{doctor.id}") do
+                click_link I18n.t('button.add.review')
+            end
+
             expect(page).to have_text I18n.t('alert.new.present')
+            expect(current_path).to eq(reviews_path)
+        logout(:user)
+    end
+
+    scenario "doctor fill recomendation in appointment, user create new appointment to the same date" do
+        review = FactoryBot.create(:review, review_date: Date.today)
+        FactoryBot.create(:personal_card, user: review.doctor.user)
+        FactoryBot.create(:personal_card, user: review.user)
+
+        login_as(review.user, :scope => :user)
+            visit "/doctors"
+            within("div#doctor_#{review.doctor.id}") do
+                click_link I18n.t('button.add.review')
+            end
+
+            expect(page).to have_text I18n.t('alert.new.present')
+            expect(current_path).to eq(reviews_path)
+        logout(:user)
+
+        login_as(review.doctor.user, :scope => :user)
+            visit "/reviews"
+            within("div#review_#{review.id}") do
+                click_link I18n.t('button.edit_review')
+            end
+
+            expect(page).to have_text I18n.t('reviews.edit.title')
+            expect(current_path).to eq(edit_review_path(review))
+            fill_in_rich_text_area I18n.t('reviews.form.recommendation'), with: "Some doctor recommendation."
+            click_button I18n.t('button.submit')
+
+            expect(page).to have_text I18n.t('notice.update.review')
+            expect(current_path).to eq(reviews_path)
+        logout(:user)
+
+        login_as(review.user, :scope => :user)
+            visit "/doctors"
+            within("div#doctor_#{review.doctor.id}") do
+                click_link I18n.t('button.add.review')
+            end
+
+            expect(page).to have_text I18n.t('reviews.new.title')
+            expect(current_path).to eq(new_review_path)
+            fill_in I18n.t('reviews.form.review_date'), with: (Date.today)
+            click_button I18n.t('button.submit')
+
+            expect(page).to have_text I18n.t('notice.create.review')
             expect(current_path).to eq(reviews_path)
         logout(:user)
     end
@@ -146,14 +224,6 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
 
             expect(page).to have_text I18n.t('alert.doctor_busy')
             expect(current_path).to eq(new_review_path)
-
-            visit "/doctors"
-            within("div#doctor_#{doctor.id}") do
-                click_link I18n.t('button.add.review')
-            end
-
-            expect(page).to have_text I18n.t('reviews.new.title')
-            expect(current_path).to eq(new_review_path)
             fill_in I18n.t('reviews.form.review_date'), with: (Date.today + 1)
             click_button I18n.t('button.submit')
 
@@ -162,7 +232,7 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
         logout(:user)
     end
 
-    scenario "user can cancel an appointment before doctor's review" do
+    scenario "user cancel an appointment before doctor's review" do
         doctor = FactoryBot.create(:doctor)
         patient_user = FactoryBot.create(:user)
         FactoryBot.create(:personal_card, user: doctor.user)
@@ -206,7 +276,6 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
 
             expect(page).to have_text I18n.t('notice.create.review')
             expect(current_path).to eq(reviews_path)
-            expect(page).to have_selector("div#accordionExample")
             within("div#accordionExample") do
                 expect(page).to have_text I18n.t('reviews.index.my_reviews')
             end
@@ -236,7 +305,6 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
 
             expect(page).to have_text I18n.t('notice.create.review')
             expect(current_path).to eq(reviews_path)
-            expect(page).to have_selector("div#accordionExample")
             within("div#accordionExample") do
                 expect(page).to have_text I18n.t('reviews.index.my_reviews')
             end
@@ -260,7 +328,7 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
         logout(:user)
     end
 
-    scenario "doctor can read medical card of patient in new window during review", js: true do
+    scenario "doctors read medical card of patient in new window during reviews" do
         review = FactoryBot.create(:review, review_date: Date.today)
         review_two = FactoryBot.create(:review, review_date: Date.today, user: review.user)
         FactoryBot.create(:personal_card, user: review.doctor.user)
@@ -304,29 +372,32 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
                 expect(page).to have_text I18n.t('reviews.show.title')
                 expect(current_path).to eq(review_path(review))
                 expect(page).to have_text("Some doctor recommendation.")
+                click_link I18n.t('button.back')
+                expect(page).to have_text I18n.t('reviews.medical_card.title')
+                expect(current_path).to eq(reviews_medical_card_path)
             end
         logout(:user)
     end
 
-    scenario "admin, doctor, and user check the available buttons in reviews_path, depending on their role and review_date" do
+    scenario "admin, doctor, and user check review records and the available buttons in reviews_path, depending on their role and review_date" do
         doctor = FactoryBot.create(:doctor)
         patient_user = FactoryBot.create(:user)
         admin_user = FactoryBot.create(:user, role: "admin")
         FactoryBot.create(:personal_card, user: doctor.user)
         FactoryBot.create(:personal_card, user: patient_user)
         FactoryBot.create(:personal_card, user: admin_user)
+        review_old = FactoryBot.create(:review, review_date: (Date.today - 1), user: patient_user, doctor: doctor)
         review = FactoryBot.create(:review, review_date: Date.today, user: patient_user, doctor: doctor)
         review_two = FactoryBot.create(:review, review_date: (Date.today + 1), user: admin_user, doctor: doctor)
 
         login_as(doctor.user, :scope => :user)
             visit "/reviews"
             expect(page).not_to have_selector("div#accordionExample")
-            expect(page).to have_selector("div#review_#{review.id}")
+            expect(page).not_to have_selector("div#review_#{review_old.id}")
             within("div#review_#{review.id}") do
                 expect(page).not_to have_text I18n.t('button.destroy_review')
                 expect(page).to have_text I18n.t('button.edit_review')
             end
-            expect(page).to have_selector("div#review_#{review_two.id}")
             within("div#review_#{review_two.id}") do
                 expect(page).not_to have_text I18n.t('button.destroy_review')
                 expect(page).not_to have_text I18n.t('button.edit_review')
@@ -335,7 +406,7 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
 
         login_as(patient_user, :scope => :user)
             visit "/reviews"
-            expect(page).to have_selector("div#review_#{review.id}")
+            expect(page).not_to have_selector("div#review_#{review_old.id}")
             within("div#review_#{review.id}") do
                 expect(page).to have_text I18n.t('button.destroy_review')
                 expect(page).not_to have_text I18n.t('button.edit_review')
@@ -344,24 +415,20 @@ RSpec.feature "Reviews", driver: :selenium_chrome, type: :feature do
 
         login_as(admin_user, :scope => :user)
             visit "/reviews"
-            expect(page).to have_selector("div#review_#{review.id}")
+            expect(page).not_to have_selector("div#review_#{review_old.id}")
             within("div#review_#{review.id}") do
                 expect(page).not_to have_text I18n.t('button.destroy_review')
                 expect(page).not_to have_text I18n.t('button.edit_review')
             end
-            expect(page).to have_selector("div#review_#{review_two.id}")
             within("div#review_#{review_two.id}") do
                 expect(page).to have_text I18n.t('button.destroy_review')
                 expect(page).not_to have_text I18n.t('button.edit_review')
             end
-            expect(page).to have_selector("div#accordionExample")
             within("div#accordionExample") do
-                expect(page).to have_text I18n.t('reviews.index.my_reviews')
                 expect(page).not_to have_selector("div#review_#{review_two.id}")
                 click_button I18n.t('reviews.index.my_reviews')
             end
             within("div#accordionExample") do
-                expect(page).to have_selector("div#review_#{review_two.id}")
                 within("div#review_#{review_two.id}") do
                     expect(page).to have_text I18n.t('button.destroy_review')
                     expect(page).not_to have_text I18n.t('button.edit_review')
