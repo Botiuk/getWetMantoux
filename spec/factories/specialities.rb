@@ -1,6 +1,6 @@
 FactoryBot.define do
     factory :speciality do
-        name  { Faker::Job.unique.field }
+        name  { Faker::Music.unique.band }
         description { Faker::Movies::StarWars.wookiee_sentence }
     end
 end
