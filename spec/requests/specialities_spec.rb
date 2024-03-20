@@ -12,28 +12,28 @@ RSpec.describe "Specialities", type: :request do
       doctor = FactoryBot.create(:doctor, speciality: speciality)
       FactoryBot.create(:personal_card, user: doctor.user)
       visit "/specialities/belonging_doctors?id=#{speciality.id}"
-      expect(page).to have_text(speciality.name)
-      expect(page).to have_text(doctor.personal_card.last_name)
+      expect(page).to have_text speciality.name
+      expect(page).to have_text doctor.personal_card.last_name
     end
 
     it "can read speciality belonging_doctors, speciality hasnot doctor" do
       speciality = FactoryBot.create(:speciality)
       visit "/specialities/belonging_doctors?id=#{speciality.id}"
-      expect(page).to have_text(speciality.name)
-      expect(page).to have_text(I18n.t('specialities.belonging_doctors.doctors_empty'))
+      expect(page).to have_text speciality.name
+      expect(page).to have_text I18n.t('specialities.belonging_doctors.doctors_empty')
     end
 
     it "cannot creates speciality and redirects to the sign_in page" do
       visit '/specialities/new'
       expect(current_path).to eq(new_user_session_path)
-      expect(page).to have_text(I18n.t('devise.failure.unauthenticated'))
+      expect(page).to have_text I18n.t('devise.failure.unauthenticated')
     end
 
     it "cannot updates speciality and redirects to the sign_in page" do
       speciality = FactoryBot.create(:speciality)
       visit "/specialities/#{speciality.id}/edit"
       expect(current_path).to eq(new_user_session_path)
-      expect(page).to have_text(I18n.t('devise.failure.unauthenticated'))
+      expect(page).to have_text I18n.t('devise.failure.unauthenticated')
     end
   end
 
@@ -50,7 +50,7 @@ RSpec.describe "Specialities", type: :request do
         fill_in I18n.t('specialities.form.description'), with: "Some description about family doctor speciality"
         click_button I18n.t('button.submit')
       expect(current_path).to eq(specialities_path)
-      expect(page).to have_text(I18n.t('notice.create.speciality'))
+      expect(page).to have_text I18n.t('notice.create.speciality')
     end
 
     it "updates speciality and redirects to the specialities page" do
@@ -59,7 +59,7 @@ RSpec.describe "Specialities", type: :request do
         fill_in I18n.t('specialities.form.name'), with: "Edit speciality"
         click_button I18n.t('button.submit')
       expect(current_path).to eq(specialities_path)
-      expect(page).to have_text(I18n.t('notice.update.speciality'))
+      expect(page).to have_text I18n.t('notice.update.speciality')
     end
 
   end
@@ -75,14 +75,14 @@ RSpec.describe "Specialities", type: :request do
     it "cannot creates and redirects to the root page" do
       visit '/specialities/new'
       expect(current_path).to eq(root_path)
-      expect(page).to have_text(I18n.t('alert.access_denied'))
+      expect(page).to have_text I18n.t('alert.access_denied')
     end
 
     it "cannot updates speciality and redirects to the root page" do
       speciality = FactoryBot.create(:speciality)
       visit "/specialities/#{speciality.id}/edit"
       expect(current_path).to eq(root_path)
-      expect(page).to have_text(I18n.t('alert.access_denied'))
+      expect(page).to have_text I18n.t('alert.access_denied')
     end
   end
 
@@ -97,14 +97,14 @@ RSpec.describe "Specialities", type: :request do
     it "cannot creates and redirects to the root page" do
       visit '/specialities/new'
       expect(current_path).to eq(root_path)
-      expect(page).to have_text(I18n.t('alert.access_denied'))
+      expect(page).to have_text I18n.t('alert.access_denied')
     end
 
     it "cannot updates speciality and redirects to the root page" do
       speciality = FactoryBot.create(:speciality)
       visit "/specialities/#{speciality.id}/edit"
       expect(current_path).to eq(root_path)
-      expect(page).to have_text(I18n.t('alert.access_denied'))
+      expect(page).to have_text I18n.t('alert.access_denied')
     end
   end
 
@@ -118,14 +118,14 @@ RSpec.describe "Specialities", type: :request do
     it "cannot creates and redirects to the root page" do
       visit '/specialities/new'
       expect(current_path).to eq(root_path)
-      expect(page).to have_text(I18n.t('alert.access_denied'))
+      expect(page).to have_text I18n.t('alert.access_denied')
     end
 
     it "cannot updates speciality and redirects to the root page" do
       speciality = FactoryBot.create(:speciality)
       visit "/specialities/#{speciality.id}/edit"
       expect(current_path).to eq(root_path)
-      expect(page).to have_text(I18n.t('alert.access_denied'))
+      expect(page).to have_text I18n.t('alert.access_denied')
     end
   end
 

@@ -125,6 +125,24 @@ RSpec.feature "Reviews", driver: :selenium_chrome, js: true, type: :feature do
         logout(:user)
     end
 
+    scenario "user cannot make an appointment if doctor in vacation and and cannot see the fired doctor" do
+        doctor = FactoryBot.create(:doctor, doctor_status: "vacation")
+        doctor_two = FactoryBot.create(:doctor, doctor_status: "fired")
+        patient_user = FactoryBot.create(:user)
+        FactoryBot.create(:personal_card, user: doctor.user)
+        FactoryBot.create(:personal_card, user: doctor_two.user)
+        FactoryBot.create(:personal_card, user: patient_user)
+
+        login_as(patient_user, :scope => :user)
+            visit "/doctors"
+            within("div#doctor_#{doctor.id}") do
+                expect(page).not_to have_text I18n.t('button.add.review')
+                expect(page).to have_text I18n.t('doctors.doctor.vacation')
+            end
+            expect(page).not_to have_selector("div#doctor_#{doctor_two.id}")
+        logout(:user)
+    end
+
     scenario "user creates appointment when the date of old review passed (without recommendation) and cannot make a second new appointment with the same doctor" do
         doctor = FactoryBot.create(:doctor)
         patient_user = FactoryBot.create(:user)
@@ -233,13 +251,11 @@ RSpec.feature "Reviews", driver: :selenium_chrome, js: true, type: :feature do
     end
 
     scenario "user cancel an appointment before doctor's review" do
-        doctor = FactoryBot.create(:doctor)
-        patient_user = FactoryBot.create(:user)
-        FactoryBot.create(:personal_card, user: doctor.user)
-        FactoryBot.create(:personal_card, user: patient_user)
-        review = FactoryBot.create(:review, user: patient_user, doctor: doctor)
+        review = FactoryBot.create(:review)
+        FactoryBot.create(:personal_card, user: review.doctor.user)
+        FactoryBot.create(:personal_card, user: review.user)
 
-        login_as(patient_user, :scope => :user)
+        login_as(review.user, :scope => :user)
             visit "/reviews"
             within("div#review_#{review.id}") do
                 accept_alert do
@@ -347,6 +363,7 @@ RSpec.feature "Reviews", driver: :selenium_chrome, js: true, type: :feature do
                 expect(current_path).to eq(reviews_medical_card_path)
                 expect(page).to have_text I18n.t('reviews.medical_card.reviews_empty')
             end
+            new_window.close
             fill_in_rich_text_area I18n.t('reviews.form.recommendation'), with: "Some doctor recommendation."
             click_button I18n.t('button.submit')
 
@@ -376,6 +393,7 @@ RSpec.feature "Reviews", driver: :selenium_chrome, js: true, type: :feature do
                 expect(page).to have_text I18n.t('reviews.medical_card.title')
                 expect(current_path).to eq(reviews_medical_card_path)
             end
+            new_window_two.close
         logout(:user)
     end
 
@@ -434,6 +452,122 @@ RSpec.feature "Reviews", driver: :selenium_chrome, js: true, type: :feature do
                     expect(page).not_to have_text I18n.t('button.edit_review')
                 end
             end
+        logout(:user)
+    end
+
+    scenario "user see doctors recomendation in medical card when doctor in vaction or fired" do
+        review = FactoryBot.create(:review, review_date: Date.today)
+        FactoryBot.create(:personal_card, user: review.doctor.user)
+        FactoryBot.create(:personal_card, user: review.user)
+
+        login_as(review.doctor.user, :scope => :user)
+            visit "/reviews"
+            within("div#review_#{review.id}") do
+                click_link I18n.t('button.edit_review')
+            end
+            expect(page).to have_text I18n.t('reviews.edit.title')
+            fill_in_rich_text_area I18n.t('reviews.form.recommendation'), with: "Recommendation from working doctor."
+            click_button I18n.t('button.submit')
+            expect(page).to have_text I18n.t('notice.update.review')
+            expect(current_path).to eq(reviews_path)
+        logout(:user)
+
+        review.doctor.update(doctor_status: "vacation")
+        login_as(review.user, :scope => :user)
+            visit "/reviews/medical_card"
+            expect(page).to have_text "Recommendation from working doctor."
+            expect(current_path).to eq(reviews_medical_card_path)
+        logout(:user)
+
+        review.doctor.update(doctor_status: "fired")
+        login_as( review.user, :scope => :user)
+            visit "/reviews/medical_card"
+            expect(page).to have_text "Recommendation from working doctor."
+            expect(current_path).to eq(reviews_medical_card_path)
+        logout(:user)
+    end
+
+    scenario "user, doctor, and admin try to read another user's medical card, but see their personal. For a doctor, this depends on his doctor_status" do
+        doctor_with_status = FactoryBot.create(:doctor)
+        admin = FactoryBot.create(:user, role: "admin")
+        review = FactoryBot.create(:review, review_date: Date.today)
+        review_two = FactoryBot.create(:review, review_date: Date.today, doctor: review.doctor, user: doctor_with_status.user)
+        review_three = FactoryBot.create(:review, review_date: Date.today, doctor: review.doctor, user: admin)
+        FactoryBot.create(:personal_card, user: doctor_with_status.user)
+        FactoryBot.create(:personal_card, user: admin)
+        FactoryBot.create(:personal_card, user: review.doctor.user)
+        FactoryBot.create(:personal_card, user: review.user)
+
+        login_as(review.doctor.user, :scope => :user)
+            visit "/reviews"
+            within("div#review_#{review.id}") do
+                click_link I18n.t('button.edit_review')
+            end
+            expect(page).to have_text I18n.t('reviews.edit.title')
+            fill_in_rich_text_area I18n.t('reviews.form.recommendation'), with: "Doctor recommendation to user."
+            click_button I18n.t('button.submit')
+            expect(page).to have_text I18n.t('notice.update.review')
+            expect(current_path).to eq(reviews_path)
+            within("div#review_#{review_two.id}") do
+                click_link I18n.t('button.edit_review')
+            end
+            expect(page).to have_text I18n.t('reviews.edit.title')
+            fill_in_rich_text_area I18n.t('reviews.form.recommendation'), with: "Doctor recommendation to doctor_with_status."
+            click_button I18n.t('button.submit')
+            expect(page).to have_text I18n.t('notice.update.review')
+            expect(current_path).to eq(reviews_path)
+            within("div#review_#{review_three.id}") do
+                click_link I18n.t('button.edit_review')
+            end
+            expect(page).to have_text I18n.t('reviews.edit.title')
+            fill_in_rich_text_area I18n.t('reviews.form.recommendation'), with: "Doctor recommendation to admin."
+            click_button I18n.t('button.submit')
+            expect(page).to have_text I18n.t('notice.update.review')
+            expect(current_path).to eq(reviews_path)
+        logout(:user)
+
+        login_as(review.user, :scope => :user)
+            visit "/reviews/medical_card"
+            expect(page).to have_text "Doctor recommendation to user."
+            expect(current_path).to eq(reviews_medical_card_path)
+
+            visit "/reviews/medical_card?user_id=#{review_three.user.id}"
+            expect(page).to have_text "Doctor recommendation to user."
+            expect(current_path).to eq(reviews_medical_card_path)
+        logout(:user)
+
+        login_as(doctor_with_status.user, :scope => :user)
+            visit "/reviews/medical_card"
+            expect(page).to have_text "Doctor recommendation to doctor_with_status."
+            expect(current_path).to eq(reviews_medical_card_path)
+
+            visit "/reviews/medical_card?user_id=#{review.user.id}"
+            expect(page).to have_text "Doctor recommendation to user."
+            expect(current_path).to eq(reviews_medical_card_path)
+        logout(:user)
+
+        doctor_with_status.update(doctor_status: "fired")
+        login_as(doctor_with_status.user, :scope => :user)
+            visit "/reviews/medical_card?user_id=#{review.user.id}"
+            expect(page).to have_text "Doctor recommendation to doctor_with_status."
+            expect(current_path).to eq(reviews_medical_card_path)
+        logout(:user)
+
+        doctor_with_status.update(doctor_status: "vacation")
+        login_as(doctor_with_status.user, :scope => :user)
+            visit "/reviews/medical_card?user_id=#{review.user.id}"
+            expect(page).to have_text "Doctor recommendation to user."
+            expect(current_path).to eq(reviews_medical_card_path)
+        logout(:user)
+
+        login_as(admin, :scope => :user)
+            visit "/reviews/medical_card"
+            expect(page).to have_text "Doctor recommendation to admin."
+            expect(current_path).to eq(reviews_medical_card_path)
+
+            visit "/reviews/medical_card?user_id=#{review.user.id}"
+            expect(page).to have_text "Doctor recommendation to admin."
+            expect(current_path).to eq(reviews_medical_card_path)
         logout(:user)
     end
 
