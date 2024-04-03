@@ -64,7 +64,4 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-  config.include Capybara::DSL
-  config.include Warden::Test::Helpers
-  config.include ActionText::SystemTestHelper, type: :feature
 end
