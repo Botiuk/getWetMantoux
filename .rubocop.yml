@@ -1,0 +1,23 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-factory_bot
+  - rubocop-rspec
+  - rubocop-rspec_rails
+  - rubocop-capybara
+
+AllCops:
+  NewCops: enable
+
+# Disable inline documentation since it is not practical or desired
+# to add it to every class and module.
+Style/Documentation:
+  Enabled: false
+  
+Layout/EndOfLine:
+  Enabled: False
+
+RSpec/MultipleExpectations:
+  Enabled: false
