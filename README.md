@@ -2,9 +2,11 @@
 
 App for managing the medical clinic. An appointment with a doctor, a doctor's examination, and a user's medical card.
 
-Built with: Rails 7.1.3, Ruby 3.2.2, postgres, Turbo, Stimulus, Bootstrap, Trix editor, Cloudinary, devise, cancancan.
+Built with: Rails 7.2.1.2, Ruby 3.3.5, postgres, Turbo, Stimulus, Bootstrap, Trix editor, Cloudinary, devise, cancancan.
 
 Test with: RSpec, Capybara, factory_bot_rails and faker.
+
+Code style checking: RuboCop and his special cops.
 
 Deployed on: https://getwetmantoux.onrender.com/ (free instance will spin down with inactivity, which can delay requests by 50 seconds or more).
 
