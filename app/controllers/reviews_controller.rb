@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ReviewsController < ApplicationController
-  before_action :set_review, only: %i[ show edit update destroy ]
+  before_action :set_review, only: %i[show edit update destroy]
   load_and_authorize_resource
 
   def index
@@ -16,17 +18,14 @@ class ReviewsController < ApplicationController
     redirect_to reviews_url(page: 1)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     open_review_for_pair = Review.open_review_for_pair(params[:doctor_id], current_user.id)
     if open_review_for_pair.blank?
       @review = Review.new(doctor_id: params[:doctor_id])
       @doctor = Doctor.find(params[:doctor_id])
-      if @doctor.user_id == current_user.id
-        redirect_to specialities_url, alert: t('alert.new.recursion')
-      end
+      redirect_to specialities_url, alert: t('alert.new.recursion') if @doctor.user_id == current_user.id
     else
       redirect_to reviews_url, alert: t('alert.new.present')
     end
@@ -35,9 +34,9 @@ class ReviewsController < ApplicationController
   end
 
   def edit
-    if @review.recommendation.present?
-      redirect_to reviews_url, alert: t('alert.edit.close')
-    end
+    return if @review.recommendation.blank?
+
+    redirect_to reviews_url, alert: t('alert.edit.close')
   end
 
   def create
@@ -58,9 +57,9 @@ class ReviewsController < ApplicationController
 
   def update
     if @review.update(review_params)
-        redirect_to reviews_url, notice: t('notice.update.review')
+      redirect_to reviews_url, notice: t('notice.update.review')
     else
-        render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -85,14 +84,13 @@ class ReviewsController < ApplicationController
 
   private
 
-    def set_review
-      @review = Review.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      redirect_to root_path
-    end
+  def set_review
+    @review = Review.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path
+  end
 
-    def review_params
-      params.require(:review).permit(:user_id, :doctor_id, :review_date, :recommendation)
-    end
-
+  def review_params
+    params.require(:review).permit(:user_id, :doctor_id, :review_date, :recommendation)
+  end
 end

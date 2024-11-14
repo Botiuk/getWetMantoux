@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class PersonalCardsController < ApplicationController
-  skip_before_action :find_user_personal_card, only: %i[ new create ]
-  before_action :set_personal_card, only: %i[ show edit update ]
+  skip_before_action :find_user_personal_card, only: %i[new create]
+  before_action :set_personal_card, only: %i[show edit update]
   load_and_authorize_resource
 
   def index
@@ -18,22 +20,22 @@ class PersonalCardsController < ApplicationController
     if params[:last_name].blank?
       redirect_to personal_cards_url, alert: t('alert.search.personal_card')
     else
-      @pagy, @personal_cards = pagy(PersonalCard.where('lower(last_name) LIKE ?', "%" + params[:last_name].downcase + "%"), items: 20)
+      @pagy, @personal_cards = pagy(
+        PersonalCard.where('lower(last_name) LIKE ?', "%#{params[:last_name].downcase}%"), items: 20
+      )
       @search_params = params[:last_name]
     end
   rescue Pagy::OverflowError
     redirect_to personal_cards_url(page: 1)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @personal_card = PersonalCard.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @personal_card = PersonalCard.new(personal_card_params)
@@ -64,5 +66,4 @@ class PersonalCardsController < ApplicationController
   def personal_card_params
     params.require(:personal_card).permit(:first_name, :middle_name, :last_name, :date_of_birth, :user_id)
   end
-
 end

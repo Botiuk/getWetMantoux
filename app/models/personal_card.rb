@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PersonalCard < ApplicationRecord
   belongs_to :user
 
@@ -11,5 +13,4 @@ class PersonalCard < ApplicationRecord
   end
 
   default_scope { order(:last_name, :first_name, :middle_name, :date_of_birth) }
-
 end

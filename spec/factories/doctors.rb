@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-    factory :doctor do
-        user { FactoryBot.create(:user, role: "doctor") }
-        speciality { FactoryBot.create(:speciality) }
-        doctor_status { "working" }        
-    end
+  factory :doctor do
+    user { FactoryBot.create(:user, role: 'doctor') }
+    speciality { FactoryBot.create(:speciality) }
+    doctor_status { 'working' }
+  end
 end

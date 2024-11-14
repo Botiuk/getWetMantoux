@@ -1,0 +1,35 @@
+Layout/LineLength:
+  Exclude:
+    - 'config/initializers/devise.rb'
+    - 'spec/features/review_spec.rb'
+
+Rails/UniqueValidationWithoutIndex:
+  Exclude:
+    - 'app/models/speciality.rb'
+    - 'app/models/doctor.rb'
+    - 'app/models/personal_card.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'db/migrate/20240214081825_create_active_storage_tables.active_storage.rb'
+    - 'app/models/ability.rb'
+    - 'app/controllers/reviews_controller.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'db/migrate/20240214081825_create_active_storage_tables.active_storage.rb'
+    - 'app/models/ability.rb'
+    - 'app/controllers/reviews_controller.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'config/environments/development.rb'
+
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/features/review_spec.rb'
+    - 'spec/requests/specialities_spec.rb'
+
+Rails/HelperInstanceVariable:
+  Exclude:
+    - 'app/helpers/application_helper.rb'

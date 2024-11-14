@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -8,9 +10,9 @@ class User < ApplicationRecord
 
   validates :phone, uniqueness: true, format: { with: /\A[+]?\d+\z/ }, length: { in: 6..15 }
 
-  has_one :personal_card
-  has_one :doctor
-  has_many :reviews
+  has_one :personal_card, dependent: nil
+  has_one :doctor, dependent: nil
+  has_many :reviews, dependent: nil
 
   default_scope { order(:phone) }
 
@@ -28,7 +30,7 @@ class User < ApplicationRecord
 
   def self.free_users_with_role_doctor
     doctors_user_id = Doctor.pluck(:user_id)
-    User.where(role: "doctor").where.not(id: doctors_user_id).pluck(:phone, :id)
+    User.where(role: 'doctor').where.not(id: doctors_user_id).pluck(:phone, :id)
   end
 
   def self.doctor_formhelper(user_id)
@@ -36,7 +38,6 @@ class User < ApplicationRecord
   end
 
   def doctor_on_contract?
-    doctor? && doctor.present? && doctor.doctor_status != "fired"
+    doctor? && doctor.present? && doctor.doctor_status != 'fired'
   end
-  
 end

@@ -4,30 +4,28 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-
-    can [:read, :contacts], :home
-    can [:read, :belonging_doctors], Speciality
+    can %i[read contacts], :home
+    can %i[read belonging_doctors], Speciality
     can :read, Doctor
 
-    if user.present?
-      can [:read, :create, :update], PersonalCard, user_id: user.id
-      can [:read, :create, :destroy], Review, user_id: user.id
-      can :medical_card, Review
+    return if user.blank?
 
-      if user.doctor_on_contract?
-        can :read, Review
-        can :update, Review, doctor_id: user.doctor.id
-        can :update, Doctor, user_id: user.id
-      end
+    can %i[read create update], PersonalCard, user_id: user.id
+    can %i[read create destroy], Review, user_id: user.id
+    can :medical_card, Review
 
-      if user.admin?
-        can [:read, :create, :update], Speciality
-        can [:read, :create, :update], Doctor
-        can [:read, :update, :search], PersonalCard
-        can :index, Review
-        can [:read, :update, :search], User
-      end
-
+    if user.doctor_on_contract?
+      can :read, Review
+      can :update, Review, doctor_id: user.doctor.id
+      can :update, Doctor, user_id: user.id
     end
+
+    return unless user.admin?
+
+    can %i[read create update], Speciality
+    can %i[read create update], Doctor
+    can %i[read update search], PersonalCard
+    can :index, Review
+    can %i[read update search], User
   end
 end
