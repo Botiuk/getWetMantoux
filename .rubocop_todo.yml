@@ -3,12 +3,6 @@ Layout/LineLength:
     - 'config/initializers/devise.rb'
     - 'spec/features/review_spec.rb'
 
-Rails/UniqueValidationWithoutIndex:
-  Exclude:
-    - 'app/models/speciality.rb'
-    - 'app/models/doctor.rb'
-    - 'app/models/personal_card.rb'
-
 Metrics/AbcSize:
   Exclude:
     - 'db/migrate/20240214081825_create_active_storage_tables.active_storage.rb'
@@ -29,7 +23,3 @@ RSpec/ExampleLength:
   Exclude:
     - 'spec/features/review_spec.rb'
     - 'spec/requests/specialities_spec.rb'
-
-Rails/HelperInstanceVariable:
-  Exclude:
-    - 'app/helpers/application_helper.rb'
